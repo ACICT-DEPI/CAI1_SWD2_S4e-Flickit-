@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import logo from "../assets/question-mark.png";
-import backgroundImage from "../assets/Background.jpg";
+import logo from "../assets/images/question-mark.png";
+import backgroundImage from "../assets/images/Background.jpg";
 
 const Guessingnumber = () => {
 const [guess, setGuess] = useState('');

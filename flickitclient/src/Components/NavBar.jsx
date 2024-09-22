@@ -1,16 +1,32 @@
-import logo from '../logo.svg';
-import app from '../App'
-
-function Navbar() {
+import logo from '../assets/images/question-mark.png';
+import user from '../assets/images/user.png'
+import settings from '../assets/images/cogwheel.png'
+ 
+export default function Navbar() {
     return (
-        <div>
-            <nav className='flex gap-3'>
-                <img src={logo} className="App-logo w-40" alt="logo" />
-                <button><a href={app}>Login</a></button><br></br>
-                <button><a href={app}>Register</a></button>
-            </nav>
-        </div>
+        <div className='bg-[#3A0CA3] w-full h-16 flex justify-between items-center p-2'>
+        <div className="flex items-center space-x-2">
+        <img
+          src={logo} 
+          alt="logo"
+          className="w-8 h-8"
+        />
+        <div className="text-2xl font-Risque text-stone-50">Flickit!</div>
+      </div>
+  
+      <div className="flex space-x-6 text-lg ">
+      <img
+      src={user} 
+      alt="logo"
+      className="w-8 h-8"
+    />
+        <img
+          src={settings} 
+          alt="logo"
+          className="w-8 h-8"
+        />
+      </div>
+      </div> 
     );
 }
 
-export default Navbar;
