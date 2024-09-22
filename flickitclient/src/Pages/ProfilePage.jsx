@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 // import { useParams } from 'react-router-dom';
-import profileImage from '../assets/user.png'; // Import your profile image
-import backgroundImage from "../assets/Background.jpg";
-import logo from "../assets/question-mark.png";
+import profileImage from '../assets/images/user.png'; // Import your profile image
+import backgroundImage from "../assets/images/Background.jpg";
+import logo from "../assets/images/question-mark.png";
 
 const ProfilePage = () => {
   // const { username } = useParams();

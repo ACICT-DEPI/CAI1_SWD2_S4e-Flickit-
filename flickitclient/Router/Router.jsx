@@ -4,6 +4,8 @@ import ForgotPasswordPage from '../src/Pages/ForgotPasswordPage';
 import RegisterPage from '../src/Pages/Login/RegisterPage';
 import ProfilePage from '../src/Pages/ProfilePage';
 import GuessingNumber from '../src/Pages/GuessingNumber';
+import  HomePage from '../src/Pages/HomePage'
+import NewGame from '../src/Pages/NewGame';
 export default function Router() {
     const router = createBrowserRouter([      
           {
@@ -21,7 +23,13 @@ export default function Router() {
       },         {
         path: "/guessing-number",
         element: <GuessingNumber   />,
-      },
+      },         {
+        path: "/Home",
+        element: <HomePage />,
+      },         {
+        path: "/NewGame",
+        element: <NewGame />,
+      },           
         ]);
     return <RouterProvider router={router} />;
 }

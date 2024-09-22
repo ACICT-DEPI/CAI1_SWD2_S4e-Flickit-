@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from "../../assets/question-mark.png";
-import backgroundImage from "../../assets/Background.jpg";
+import logo from "../../assets/images/question-mark.png";
+import backgroundImage from "../../assets/images/Background.jpg";
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
