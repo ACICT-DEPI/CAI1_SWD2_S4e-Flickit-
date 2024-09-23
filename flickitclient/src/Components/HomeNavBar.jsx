@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from '../assets/images/question-mark.png'
 import InstructionModal from '../Modals/instructionModal';
+import { Link } from 'react-router-dom';
 function HomeNavBar() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -31,9 +32,11 @@ function HomeNavBar() {
         How to play?
       </div>
       <InstructionModal modalIsOpen={modalIsOpen} afterOpenModal={ afterOpenModal} closeModal={closeModal} />
-      <div className="hover:underline font-Risque text-stone-50 pr-5">
-        Sign In
-      </div>
+      <Link to="/login"> {/* Link to the login page */}
+                <div className="hover:underline font-Risque text-stone-50 pr-5 cursor-pointer">
+                    Sign In
+                </div>
+            </Link>
     </div>
     </div> 
     )
