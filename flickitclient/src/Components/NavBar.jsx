@@ -1,7 +1,8 @@
 import logo from '../assets/images/question-mark.png';
 import user from '../assets/images/user.png'
 import settings from '../assets/images/cogwheel.png'
- 
+import { Link } from 'react-router-dom';
+
 export default function Navbar() {
     return (
         <div className='bg-[#3A0CA3] w-full h-16 flex justify-between items-center p-2'>
@@ -15,11 +16,13 @@ export default function Navbar() {
       </div>
   
       <div className="flex space-x-6 text-lg ">
-      <img
-      src={user} 
-      alt="logo"
-      className="w-8 h-8"
-    />
+      <Link to="/profile">
+  <img
+    src={user}
+    alt="Profile"
+    className="w-8 h-8 cursor-pointer" 
+  />
+</Link>
         <img
           src={settings} 
           alt="logo"
