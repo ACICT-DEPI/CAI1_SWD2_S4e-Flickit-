@@ -10,9 +10,9 @@ import SetNumber from '../src/Pages/SetNumber';
 import { Admin } from '../src/Pages/Admin.jsx';
 import { Film } from '../src/Pages/Film.jsx';
 import { Meals } from '../src/Pages/Meals.jsx';
-import { Guess } from '../src/Pages/Guess.jsx';
 import { Flags } from '../src/Pages/Flags.jsx';
 import { Logout } from '../src/Pages/Logout.jsx';
+import { Users } from '../src/Pages/Users.jsx';
 export default function Router() {
     const router = createBrowserRouter([      
           {
@@ -52,10 +52,7 @@ export default function Router() {
         path: "/Meals",
         element: <Meals />,
       }, 
-      {
-        path: "/Guess",
-        element: <Guess />,
-      },    
+        
       {
         path: "/Flags",
         element: <Flags />,
@@ -63,6 +60,10 @@ export default function Router() {
       {
         path: "/Logout",
         element: <Logout />,
+      },    
+      {
+        path: "/Users",
+        element: <Users />,
       },                                                
         ]);
     return <RouterProvider router={router} />;

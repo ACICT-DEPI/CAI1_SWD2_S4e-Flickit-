@@ -1,4 +1,3 @@
-import React from 'react';
 import backgroundImage from "../assets/images/Background.jpg";
 import HomeNavBar from '../Components/HomeNavBar';
 import Button from '../Components/Button';
