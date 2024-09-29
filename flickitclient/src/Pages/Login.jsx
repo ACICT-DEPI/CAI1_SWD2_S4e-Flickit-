@@ -1,19 +1,35 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { loginUser } from "../api/userApi"; 
 import logo from "../assets/images/question-mark.png";
 import backgroundImage from "../assets/images/Background.jpg";
 import swal from "sweetalert2";
 import Navbar from '../Components/NavBar';
-import Cookies from 'js-cookie'; // Import the js-cookie library
+import Cookies from 'js-cookie'; 
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // Check for admin credentials
+    if (username === 'admin' && password === '1111111111') {
+      swal.fire({
+        title: "Success",
+        text: "Welcome, Admin!",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        localStorage.setItem('username', username);
+        navigate('/admin'); // Redirect to admin page
+      });
+      return; // Exit the function
+    }
+
+    // If not admin, proceed with the loginUser function
     try {
       const data = await loginUser({ username, password });
       
@@ -23,9 +39,9 @@ const LoginPage = () => {
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
-        // Set the token in cookies
-        Cookies.set('token', data.token, { expires: 7 }); // Set token with a 7-day expiry
+        Cookies.set('token', data.token, { expires: 7 }); 
         localStorage.setItem('username', username);
+        navigate('/home'); // Redirect to the home page (or another page)
       });
       
     } catch (error) {
@@ -37,7 +53,6 @@ const LoginPage = () => {
       console.log(error);
     }
   };
-  
   return (
     <div
       className="min-h-screen bg-gray-100 relative"

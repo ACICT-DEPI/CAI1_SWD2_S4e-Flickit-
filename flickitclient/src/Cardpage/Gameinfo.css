@@ -1,0 +1,22 @@
+/* src/App.css */
+.game {
+    text-align: center;
+   
+    background-image: url('../assets/Background.jpg');
+    
+    min-height: 100vh;
+    padding: 50px;
+    color: white;
+  }
+  
+  h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .game-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  

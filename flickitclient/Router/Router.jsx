@@ -7,6 +7,20 @@ import GuessingNumber from '../src/Pages/GuessingNumber';
 import  HomePage from '../src/Pages/HomePage'
 import NewGame from '../src/Pages/NewGame';
 import SetNumber from '../src/Pages/SetNumber';
+import { Admin } from '../src/Pages/Admin.jsx';
+import { Film } from '../src/Pages/Film.jsx';
+import { Meals } from '../src/Pages/Meals.jsx';
+import { Flags } from '../src/Pages/Flags.jsx';
+import { Logout } from '../src/Pages/Logout.jsx';
+import { Users } from '../src/Pages/Users.jsx';
+import FoodForm from '../src/Components/FoodForm.jsx';
+import FlagForm from '../src/Components/FlagForm.jsx';
+import EditFilm from '../src/Components/EditFilm.jsx';
+import  EditFood  from '../src/Pages/EditFood.jsx';
+import Change_Flag from '../src/Components/Change_Flag.jsx';
+// import EditFood from '../src/Pages/EditFood.jsx'
+// import {EditFilm} from '../src/Components/EditFilm.jsx';
+// import EditFilm from '../src/Pages/EditFilm.jsx';
 export default function Router() {
     const router = createBrowserRouter([      
           {
@@ -33,7 +47,52 @@ export default function Router() {
       },         {
         path: "/NewGame",
         element: <NewGame />,
-      },           
+      },  
+      {
+        path: "/Admin",
+        element: <Admin />,
+      },    
+      {
+        path: "/Film",
+        element: <Film />,
+      },     
+      {
+        path: "/Meals",
+        element: <Meals />,
+      }, 
+        
+      {
+        path: "/Flags",
+        element: <Flags />,
+      },
+      {
+        path: "/Logout",
+        element: <Logout />,
+      },    
+      {
+        path: "/Users",
+        element: <Users />,
+      },   {
+        path: "/FoodForm",
+        element: <FoodForm />,
+      },
+      {
+        path: "/FlagForm",
+        element: <FlagForm />,
+      },
+      {
+        path: "/Change_Flag/:id",
+        element : <Change_Flag/>
+      },
+      {
+        path: "/EditFood/:id",
+        element: <EditFood />,
+      },
+        
+      {
+        path: "/EditFilm/:id",
+        element: <EditFilm />,
+      },                                        
         ]);
     return <RouterProvider router={router} />;
 }
