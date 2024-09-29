@@ -5,6 +5,8 @@ import logo from "../assets/images/question-mark.png";
 import backgroundImage from "../assets/images/Background.jpg";
 import swal from "sweetalert2";
 import Navbar from '../Components/NavBar';
+import Cookies from 'js-cookie'; // Import the js-cookie library
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,8 +23,9 @@ const LoginPage = () => {
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
+        // Set the token in cookies
+        Cookies.set('token', data.token, { expires: 7 }); // Set token with a 7-day expiry
         localStorage.setItem('username', username);
-  
       });
       
     } catch (error) {
@@ -35,8 +38,6 @@ const LoginPage = () => {
     }
   };
   
-  
-
   return (
     <div
       className="min-h-screen bg-gray-100 relative"
@@ -99,7 +100,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default LoginPage;

@@ -30,6 +30,6 @@ foodSchema.pre('save', function (next) {
   next();
 });
 
-const Food = mongoose.model('Food', fooodSchema);
+const Food = mongoose.model('Food', foodSchema);
 
 module.exports = Food;

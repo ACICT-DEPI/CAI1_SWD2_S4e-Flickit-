@@ -28,7 +28,7 @@ export default function Router() {
         path: "/set-number",
         element: <SetNumber   />,
       },         {
-        path: "/Home",
+        path: "/",
         element: <HomePage />,
       },         {
         path: "/NewGame",
