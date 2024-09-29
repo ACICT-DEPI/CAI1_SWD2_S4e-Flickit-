@@ -13,6 +13,10 @@ import { Meals } from '../src/Pages/Meals.jsx';
 import { Guess } from '../src/Pages/Guess.jsx';
 import { Flags } from '../src/Pages/Flags.jsx';
 import { Logout } from '../src/Pages/Logout.jsx';
+import ChooseScore from '../src/GameFlow/ChooseScore';
+import GamePlay from '../src/GameFlow/GamePlay';
+import ResultsPage from '../src/GameFlow/ResultsWindow';
+import GamesPage from '../src/Cardpage/Gameinfo.jsx';
 export default function Router() {
     const router = createBrowserRouter([      
           {
@@ -63,7 +67,23 @@ export default function Router() {
       {
         path: "/Logout",
         element: <Logout />,
-      },                                                
+      },
+       {
+        path: "/ScoringPage",
+        element: <ChooseScore />,
+      }, 
+      {
+        path: "/GamingPage",
+        element: <GamePlay />,
+      }, 
+      {
+        path: "/ResultsPage",
+        element: <ResultsPage />,
+      },   
+      {
+        path: "/GamesPage",
+        element: <GamesPage />,
+      },                                              
         ]);
     return <RouterProvider router={router} />;
 }

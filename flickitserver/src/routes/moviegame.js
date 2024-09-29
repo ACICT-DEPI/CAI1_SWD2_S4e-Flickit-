@@ -3,7 +3,7 @@ const router = express.Router()
 const gameController=require ('../controllers/game')
 const auth=require ('../middleware/auth.js')
  
-router.post('/game',auth,async(req,res)=>{
+router.post('/game',async(req,res)=>{
     let payload ={
         movieEmojis:req.body.movieEmojis,
         actualMovieName:req.body.actualMovieName,
@@ -63,7 +63,7 @@ router.delete('/game/:id', auth, async (req, res) => {
         res.status(500).send({ message: "Error deleting game", error });
     }
 });
-router.get('/games', auth, async (req, res) => {
+router.get('/games', async (req, res) => {
     try {
         const games = await gameController.getAllMoviees(); 
         res.send(games);
