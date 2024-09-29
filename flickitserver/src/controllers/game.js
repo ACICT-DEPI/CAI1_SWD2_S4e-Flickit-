@@ -60,7 +60,7 @@ async function getMovieById(MovieId) {
     if (!movie) {
        return error.generateErrorMessage(404,"Movie not found.");
     }
-    return {movie};
+    return movie;
 }
 async function deleteMovie(movieId) {
 

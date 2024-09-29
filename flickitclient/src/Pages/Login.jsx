@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link, useNavigate } from 'react-router-dom'; 
 import { loginUser } from "../api/userApi"; 
 import logo from "../assets/images/question-mark.png";
 import backgroundImage from "../assets/images/Background.jpg";
 import swal from "sweetalert2";
 import Navbar from '../Components/NavBar';
+import Cookies from 'js-cookie'; 
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -38,8 +39,8 @@ const LoginPage = () => {
         icon: "success",
         confirmButtonText: "OK"
       }).then(() => {
+        Cookies.set('token', data.token, { expires: 7 }); 
         localStorage.setItem('username', username);
-        // Optionally redirect to another page for normal users
         navigate('/home'); // Redirect to the home page (or another page)
       });
       
@@ -52,7 +53,6 @@ const LoginPage = () => {
       console.log(error);
     }
   };
-
   return (
     <div
       className="min-h-screen bg-gray-100 relative"
