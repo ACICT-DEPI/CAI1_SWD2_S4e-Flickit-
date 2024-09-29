@@ -1,8 +1,7 @@
-// src/App.js
 import logo from '../assets/images/question-mark.png'
-import Card from "./Card"; // Import the Card component
-import "./Gameinfo.css"; // Import main CSS file
-
+import Card from "./Card";
+import backgroundImage from "../assets/images/Background.jpg";
+import Navbar from "../Components/NavBar"
 function Info() {
   const games = [
     { emoji: "🔢", title: "Guess by Number", description: "Guess the number based on clues!" },
@@ -12,10 +11,17 @@ function Info() {
   ];
 
   return (
-    <div className="game">
+    <div className="game min-h-screen flex flex-col bg-gray-100 relative text-white text-center"
+    style={{
+      backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    }}
+>
+    <Navbar />
      <span><h1 className="text-white text-4xl font-Risque">Flickit Games</h1></span>
       
-      <div className="game-cards mt-32">
+      <div className=" flex justify-center mt-32">
         {games.map((game, index) => (
           <Card key={index} emoji={game.emoji} title={game.title} description={game.description} />
         ))}

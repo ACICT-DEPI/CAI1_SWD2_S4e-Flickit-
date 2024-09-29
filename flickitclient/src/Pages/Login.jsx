@@ -41,7 +41,7 @@ const LoginPage = () => {
       }).then(() => {
         Cookies.set('token', data.token, { expires: 7 }); 
         localStorage.setItem('username', username);
-        navigate('/home'); // Redirect to the home page (or another page)
+        navigate('/GamesPage');
       });
       
     } catch (error) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import { MdEdit, MdDelete, MdPerson } from "react-icons/md";
+import {  MdDelete, MdPerson } from "react-icons/md";
 import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
 
@@ -30,7 +30,7 @@ export function Users() {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete('http://localhost:8000/api/users/${userId}')
+        axios.delete(`http://localhost:8000/api/users/${userId}`) // Use backticks here
           .then((response) => {
             setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
             swal.fire({
@@ -86,10 +86,7 @@ export function Users() {
                   <td className="p-5 text-lg">{user._id}</td>
                   <td className="p-5">
                     <div className="flex gap-3">
-                      {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/update/${user._id}`)}>
-                        <MdEdit className="text-indigo-500 hover:text-indigo-700 text-2xl cursor-pointer" />
-                      </button>
+
 
                       {/* Delete Icon */}
                       <button onClick={() => handleDelete(user._id)}>

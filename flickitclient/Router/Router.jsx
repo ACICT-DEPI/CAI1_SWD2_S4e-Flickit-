@@ -15,13 +15,14 @@ import { Logout } from '../src/Pages/Logout.jsx';
 import ChooseScore from '../src/GameFlow/ChooseScore';
 import GamePlay from '../src/GameFlow/GamePlay';
 import ResultsPage from '../src/GameFlow/ResultsWindow';
-import GamesPage from '../src/Cardpage/Gameinfo.jsx';
+import GamesPage from '../src/Cardpage/Info.jsx';
 import { Users } from '../src/Pages/Users.jsx';
 import FoodForm from '../src/Components/FoodForm.jsx';
 import FlagForm from '../src/Components/FlagForm.jsx';
 import EditFilm from '../src/Components/EditFilm.jsx';
-import  EditFood  from '../src/Pages/EditFood.jsx';
+import EditFood  from '../src/Pages/EditFood.jsx';
 import Change_Flag from '../src/Components/Change_Flag.jsx';
+import GamePage from '../src/Pages/gamePage.jsx' 
 // import EditFood from '../src/Pages/EditFood.jsx'
 // import {EditFilm} from '../src/Components/EditFilm.jsx';
 // import EditFilm from '../src/Pages/EditFilm.jsx';
@@ -88,8 +89,7 @@ export default function Router() {
       {
         path: "/GamesPage",
         element: <GamesPage />,
-      },                                              
-      },    
+      },                                                  
       {
         path: "/Users",
         element: <Users />,
@@ -113,7 +113,12 @@ export default function Router() {
       {
         path: "/EditFilm/:id",
         element: <EditFilm />,
-      },                                        
+      },
+        
+      {
+        path: "/gamePage",
+        element: <GamePage />,
+      }                                       
         ]);
     return <RouterProvider router={router} />;
 }

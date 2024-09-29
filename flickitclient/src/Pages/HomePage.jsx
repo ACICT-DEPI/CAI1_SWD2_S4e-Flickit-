@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import backgroundImage from "../assets/images/Background.jpg";
 import HomeNavBar from '../Components/HomeNavBar';
