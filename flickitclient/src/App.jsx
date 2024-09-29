@@ -1,26 +1,3 @@
-/* import { createBrowserRouterRoutes, Route } from 'react-router-dom';
-import LoginPage from './Components/Login';
-import ForgotPasswordPage from './Components/ForgotPasswordPage';
-import RegisterPage from './Components/RegisterPage';
-import ProfilePage from './Components/ProfilePage';
-import GuessingNumber from './Components/GuessingNumber';
-const App = () => {
-  return (
-    <div>
-      <Routes>
-      <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/guessing-number" element={<GuessingNumber />} />
-      </Routes>
-    </div>
-  );
-};
-
-export default App;
- */
 import config from '../config'
 import Cookies from 'js-cookie'
 

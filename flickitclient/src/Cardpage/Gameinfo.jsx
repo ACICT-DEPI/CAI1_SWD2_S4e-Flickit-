@@ -1,5 +1,5 @@
 // src/App.js
-import logo from '../assets/question-mark.png'
+import logo from '../assets/images/question-mark.png'
 import Card from "./Card"; // Import the Card component
 import "./Gameinfo.css"; // Import main CSS file
 

@@ -3,6 +3,15 @@ const router = express.Router()
 const gameController=require ('../controllers/game')
 const auth=require ('../middleware/auth.js')
  
+router.post('/game',async(req,res)=>{
+    let payload ={
+        movieEmojis:req.body.movieEmojis,
+        actualMovieName:req.body.actualMovieName,
+         createdById:req.user._id, 
+    }
+    const result =await gameController.createMovie(payload)
+    if(result.value) {
+        return res.send(result.value)
 router.post('/game', async (req, res) => {
     console.log("Request body:", req.body);  // Log the incoming request body
 
