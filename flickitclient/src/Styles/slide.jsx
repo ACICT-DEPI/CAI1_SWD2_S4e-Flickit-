@@ -9,11 +9,29 @@ import { GiMeal } from "react-icons/gi";
 import { MdOutlineEmojiFlags } from "react-icons/md";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Ensure this import is included
 
 export const Slide = () => {
     const [open, setOpen] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(null); 
     const [searchQuery, setSearchQuery] = useState(""); // State to store search input
+
+    // Function to handle logout confirmation
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Are You Sure?',
+            text: 'Log out!',
+            icon: 'warning', // Optional: add an icon
+            showCancelButton: true, // Show cancel button
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel' // Optional: add cancel button text
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('username');
+                window.location.href = '/login';    
+            }
+        });
+    };
 
     const Menus = [
         { title: "Dashboards", path:'/Admin', icon: <MdDashboard /> },
@@ -29,13 +47,13 @@ export const Slide = () => {
             ],
         },
         { title: "Profile", path: "/profile", spacing: true, icon: <CgProfile /> },
-        { title: "Logout", path: "/logout", icon: <IoLogOutOutline /> },
+        { title: "Logout", path: "#", icon: <IoLogOutOutline />, onClick: handleLogout }, // Changed path to "#" and added onClick
     ];
 
     // Filtered menus based on search input
     const filteredMenus = Menus.filter(menu =>
-        menu.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        (menu.submenu && menu.submenuItems.some(sub => sub.title.toLowerCase().includes(searchQuery.toLowerCase())))
+        menu.title.toLowerCase().includes(searchQuery.toLowerCase()) || // Main menu filter
+        (menu.submenu && menu.submenuItems.some(sub => sub.title.toLowerCase().includes(searchQuery.toLowerCase()))) // Submenu filter
     );
 
     const handleSubmenuToggle = (index) => {
@@ -45,10 +63,10 @@ export const Slide = () => {
     return (
         <div className="flex">
             <div
-                className={`bg-gradient-to-r from-violet-800 via-sky-600 to-fuchsia-500 h-screen p-5 pt-8 ${
-                    open ? "w-72" : "w-20"} duration-300 relative`}
+                className={`bg-gradient-to-r from-violet-800 via-sky-600 via-30% to-fuchsia-500 max-h-full p-5 pt-8 ${
+                    open ? "w-72" : "w-20"
+                } duration-300 relative`}
             >
-                {/* Collapse Button */}
                 <BsArrowLeft
                     className={`bg-white text-purple text-xl rounded-full absolute -right-3 top-9 border border-purple cursor-pointer ${
                         !open && "rotate-180"
@@ -56,7 +74,6 @@ export const Slide = () => {
                     onClick={() => setOpen(!open)}
                 />
 
-                {/* Profile */}
                 <div className="inline-flex">
                     <CgProfile
                         className={`text-fuchsia-900 text-3xl cursor-pointer rounded block float-left mr-2 duration-300 ${
@@ -74,27 +91,22 @@ export const Slide = () => {
                 </div>
 
                 <div
-    className={`flex items-center rounded-md bg-transparent bg-indigo-300 mt-6 ${
-        !open ? "px-2.5" : "px-4"
-    } py-2`}
->
-    <FaSearch className={`text-lg block float-left cursor-pointer ${open && "mr-2"}`} />
-    <input
-        type={"search"}
-        placeholder="Search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className={`text-base bg-transparent placeholder-purple-300 text-purple-900 ml-2 w-full focus:outline-none ${
-            !open && "hidden"
-        }`}
-        style={{
-            backgroundColor: 'transparent', // Makes input background transparent
-        }}
-    />
-</div>
+                    className={`flex items-center rounded-md bg-transparent bg-indigo-300 mt-6 ${
+                        !open ? "px-2.5" : "px-4"
+                    } py-2`}
+                >
+                    <FaSearch className={`text-lg block float-left cursor-pointer ${open && "mr-2"}`} />
+                    <input
+                        type={"search"}
+                        placeholder="Search"
+                        value={searchQuery} // Bind the input to the state
+                        onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+                        className={`text-base bg-transparent ml-2 w-full text-purple focus:outline-none ${
+                            !open && "hidden"
+                        }`}
+                    />
+                </div>
 
-
-                {/* Menu List */}
                 <ul className="pt-2">
                     {filteredMenus.map((menu, index) => (
                         <div key={index}>
@@ -103,7 +115,7 @@ export const Slide = () => {
                                     menu.spacing ? "mt-9" : "mt-2"
                                 }`}
                             >
-                                <Link to={menu.path || "#"} className="flex items-center gap-x-4 w-full">
+                                <Link to={menu.path || "#"} className="flex items-center gap-x-4 w-full" onClick={menu.onClick}>
                                     <span className="text-2xl block float-left">
                                         {menu.icon ? menu.icon : <MdDashboard />}
                                     </span>
@@ -124,7 +136,7 @@ export const Slide = () => {
                             {menu.submenu && submenuOpen === index && open && (
                                 <ul>
                                     {menu.submenuItems.filter(sub =>
-                                        sub.title.toLowerCase().includes(searchQuery.toLowerCase())
+                                        sub.title.toLowerCase().includes(searchQuery.toLowerCase()) // Filter submenu items based on search
                                     ).map((submenuItem, subIndex) => (
                                         <li
                                             key={subIndex}

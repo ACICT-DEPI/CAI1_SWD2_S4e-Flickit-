@@ -1,17 +1,34 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { loginUser } from "../api/userApi"; 
 import logo from "../assets/images/question-mark.png";
 import backgroundImage from "../assets/images/Background.jpg";
 import swal from "sweetalert2";
 import Navbar from '../Components/NavBar';
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // Check for admin credentials
+    if (username === 'admin' && password === '1111111111') {
+      swal.fire({
+        title: "Success",
+        text: "Welcome, Admin!",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        localStorage.setItem('username', username);
+        navigate('/admin'); // Redirect to admin page
+      });
+      return; // Exit the function
+    }
+
+    // If not admin, proceed with the loginUser function
     try {
       const data = await loginUser({ username, password });
       
@@ -22,7 +39,8 @@ const LoginPage = () => {
         confirmButtonText: "OK"
       }).then(() => {
         localStorage.setItem('username', username);
-  
+        // Optionally redirect to another page for normal users
+        navigate('/home'); // Redirect to the home page (or another page)
       });
       
     } catch (error) {
@@ -34,8 +52,6 @@ const LoginPage = () => {
       console.log(error);
     }
   };
-  
-  
 
   return (
     <div
@@ -99,7 +115,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default LoginPage;

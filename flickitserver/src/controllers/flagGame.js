@@ -1,109 +1,106 @@
 const error = require('../Utils/errorMessage');
 const Flag = require('../models/FlagGame');
 
-async function createFlag({ flagEmojis, actualCountryName,createdById }) {
-     if (!createdById) {
+async function createFlag({ flagEmojis, actualCountryName, createdById }) {
+    if (!createdById) {
         return error.generateErrorMessage(401, "Not Authorized");
-    } 
+    }
 
     if (!flagEmojis || !actualCountryName) {
-        return error.generateErrorMessage(400, "flag Emojis and Actual Country Name are required.");
+        return error.generateErrorMessage(400, "Flag Emojis and Actual Country Name are required.");
     }
 
     try {
-        const existingFlag = (await Flag.findOne({ actualCountryName })|| await Flag.findOne({ flagEmojis }));
+        const existingFlag = await Flag.findOne({ actualCountryName }) || await Flag.findOne({ flagEmojis });
 
         if (existingFlag) {
             return error.generateErrorMessage(409, "This flag already exists in the database."); 
         }
 
-        const game = await Flag.create({
+        const flag = await Flag.create({
             flagEmojis,
             actualCountryName,
             createdById
         });
 
         return {
-            value: game,
+            value: flag,
             statusCode: 201 
         };
 
     } catch (err) {
-        console.error("Error creating game:", err);
-        return error.generateErrorMessage(500, "Failed to create the game. Please try again.");
+        console.error("Error creating flag:", err);
+        return error.generateErrorMessage(500, "Failed to create the flag. Please try again.");
     }
 }
+
 async function getFlagByName(name) {
     if (!name) {
-        return error.generateErrorMessage(400,"Country name is required.");
+        return error.generateErrorMessage(400, "Country name is required.");
     }
     
     const flags = await Flag.find({ actualCountryName: { $regex: name, $options: 'i' } });
     return flags;
 }
-async function getFlagById(FlagId) {
-    if (!FlagId) {
 
-        return error.generateErrorMessage(400,"flag ID is required")
+async function getFlagById(flagId) {
+    if (!flagId) {
+        return error.generateErrorMessage(400, "Flag ID is required");
     }
-    const flag = await Flag.findById(FlagId);
+
+    const flag = await Flag.findById(flagId);
     if (!flag) {
-       return error.generateErrorMessage(404,"Flag not found.");
+        return error.generateErrorMessage(404, "Flag not found.");
     }
-    return {flag};
+    return { flag };
 }
-async function deleteFlag(FlagId) {
 
-    if (!FlagId) {
-        return error.generateErrorMessage(400,"Flag ID is required.");
+async function deleteFlag(flagId) {
+    if (!flagId) {
+        return error.generateErrorMessage(400, "Flag ID is required.");
     }
-    const result = await Movie.findByIdAndDelete(FlagId);
+
+    const result = await Flag.findByIdAndDelete(flagId);
     if (!result) {
-        return error.generateErrorMessage(404,"Flag not found.");
+        return error.generateErrorMessage(404, "Flag not found.");
     }
     return result; 
 }
-async function updateFlag(FlagId, updates) {
-    if (!FlagId) {
-        return error.generateErrorMessage(400,"Game ID is required.");
+
+async function updateFlag(flagId, updates) {
+    if (!flagId) {
+        return error.generateErrorMessage(400, "Flag ID is required.");
     }
     if (!updates || Object.keys(updates).length === 0) {
-        return error.generateErrorMessage(400,"No update data provided.");
+        return error.generateErrorMessage(400, "No update data provided.");
     }
     try {
-        const updatedFlag = await Flag.findByIdAndUpdate(gameId, updates, { new: true });
+        const updatedFlag = await Flag.findByIdAndUpdate(flagId, updates, { new: true });
         if (!updatedFlag) {
-            return error.generateErrorMessage(404,"Game not found.");
+            return error.generateErrorMessage(404, "Flag not found.");
         }
         return updatedFlag;
     } catch (err) {
-        console.error("Error updating game:", err);
-        return error.generateErrorMessage(500,"Failed to update the game. Please try again.");
+        console.error("Error updating flag:", err);
+        return error.generateErrorMessage(500, "Failed to update the flag. Please try again.");
     }
 }
+
 async function getAllCountries() {
     try {
         const flags = await Flag.find(); 
         return flags;
     } catch (err) {
         console.error("Error fetching flags:", err);
-        return error.generateErrorMessage(500,"Failed to retrieve flags. Please try again.");
+        return error.generateErrorMessage(500, "Failed to retrieve flags. Please try again.");
     }
-}
-async function getFlagByName(flagName) {
-    if (!flagName) {
-        return error.generateErrorMessage(400,"Flag name is required.");
-    }
-
-    const result = await Flag.findOne({ actualCountryName: flagName });
-    
-    if (!result) {
-        return error.generateErrorMessage(404, "Flag not found." );
-    }
-
-    return { statusCode: 200, value: result };
 }
 
 module.exports = {
-    createFlag,deleteFlag,getFlagByName,getFlagById,getAllCountries,updateFlag
+    createFlag,
+    deleteFlag,
+    getFlagByName,
+    getFlagById,
+    getAllCountries,
+    updateFlag
 };

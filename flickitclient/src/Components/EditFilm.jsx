@@ -6,7 +6,7 @@ import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
 import { PiFilmSlateFill } from "react-icons/pi";
 
-export function Film() {
+export function EditFilm() {
   const [films, setfilm] = useState([]);
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ export function Film() {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/game/${filmId}`) // Ensure this matches your backend delete route
+        axios.delete(`http://localhost:8000/game/${filmId}`) 
           .then((response) => {
             setfilm((prevfilms) => prevfilms.filter((film) => film._id !== filmId));
             swal.fire({
@@ -86,7 +86,7 @@ export function Film() {
                   <td className="p-4">
                     <div className="flex gap-2">
                       {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/editfilm/${film._id}`)}>
+                      <button onClick={() => navigate(`/EditFilm/${film._id}`)}>
                         <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
                       </button>
 

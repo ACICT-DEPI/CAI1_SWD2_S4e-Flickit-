@@ -13,6 +13,12 @@ import { Meals } from '../src/Pages/Meals.jsx';
 import { Flags } from '../src/Pages/Flags.jsx';
 import { Logout } from '../src/Pages/Logout.jsx';
 import { Users } from '../src/Pages/Users.jsx';
+import FoodForm from '../src/Components/FoodForm.jsx';
+import FlagForm from '../src/Components/FlagForm.jsx';
+// import Change_Flag from '../src/Components/Change_Flag.jsx';
+// import EditFood from '../src/Pages/EditFood.jsx'
+// import {EditFilm} from '../src/Components/EditFilm.jsx';
+// import EditFilm from '../src/Pages/EditFilm.jsx';
 export default function Router() {
     const router = createBrowserRouter([      
           {
@@ -34,7 +40,7 @@ export default function Router() {
         path: "/set-number",
         element: <SetNumber   />,
       },         {
-        path: "/Home",
+        path: "/",
         element: <HomePage />,
       },         {
         path: "/NewGame",
@@ -64,7 +70,27 @@ export default function Router() {
       {
         path: "/Users",
         element: <Users />,
-      },                                                
+      },   {
+        path: "/FoodForm",
+        element: <FoodForm />,
+      },
+      {
+        path: "/FlagForm",
+        element: <FlagForm />,
+      },
+      // {
+      //   path: "/Change_Flag/:id",
+      //   element : <Change_Flag/>
+      // },
+      // {
+      //   path: "/EditFood/:id",
+      //   element: <EditFood />,
+      // },
+      
+      // {
+      //     path: "/EditFilm/:id",
+      //     element: <EditFilm/>
+      // } ,                                            
         ]);
     return <RouterProvider router={router} />;
 }

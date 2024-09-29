@@ -4,25 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
-import { MdOutlineEmojiFlags } from "react-icons/md";
+import { PiFilmSlateFill } from "react-icons/pi";
 
-export function Flags () {
+export function Change_Flag() {
   const [flags, setflag] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch flags from the backend
+  // Fetch films from the backend
   useEffect(() => {
     axios
-      .get('http://localhost:8000/flags') 
+      .get('http://localhost:8000/games') 
       .then((response) => setflag(response.data))
-      .catch((error) => console.log('Error fetching Flag:', error));
+      .catch((error) => console.log('Error fetching flags:', error));
   }, []);
 
-  // Delete flag function
+  // Delete film function
   const handleDelete = (flagId) => {
     swal.fire({
       title: "Are you sure?",
-      text: "Do you really want to delete this Flag? This action cannot be undone.",
+      text: "Do you really want to delete this flag? This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -31,9 +31,9 @@ export function Flags () {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/Flags/${flagId}`)
+        axios.delete(`http://localhost:8000/game/${flagId}`) 
           .then((response) => {
-            setflag((prevflags) => prevflags.filter((flag) => flag._id !== flagId));
+            setflag((prevflags) => prevflags.filter((flag => flag._id !== flagId)));
             swal.fire({
               title: "Success",
               text: response.data.message || "Flag deleted successfully.",
@@ -42,10 +42,10 @@ export function Flags () {
             });
           })
           .catch((error) => {
-            console.error("Error deleting Flag: ", error);
+            console.error("Error deleting flag: ", error);
             swal.fire({
               title: "Error",
-              text: "Failed to delete Flag. Please try again.",
+              text: "Failed to delete flag. Please try again.",
               icon: "error",
               confirmButtonText: "OK"
             });
@@ -54,46 +54,39 @@ export function Flags () {
     });
   };
 
-  // Update flag function
-  const handleUpdate = (flagId) => {
-    navigate(`/Change_Flag/${flagId}`);
-  };
-
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-col lg:flex-row">
       <Slide />
-
-      <div className="flex flex-col items-center mb-10 mt-10 w-full px-4 sm:px-0">
-        {/* Header with Flag Icon */}
+      <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
+        {/* Header with Film Icon */}
         <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
-          <MdOutlineEmojiFlags className="text-4xl text-white" />
+          <PiFilmSlateFill className="text-4xl text-white" />
           <div>
-            <p className="text-white text-lg">Flags</p>
+            <p className="text-white text-lg">Flag</p>
             <p className="text-white text-2xl font-bold">{flags.length}</p>
           </div>
         </div>
-
-        {/* Flag Table */}
-        <div className="w-full sm:w-2/3 bg-white rounded-md p-6 sm:p-10 m-2 sm:m-5 shadow-lg overflow-x-auto">
+        {/* Film Table */}
+        <div className="w-full lg:w-2/3 bg-white rounded-md p-5 sm:p-10 m-5 shadow-lg overflow-x-auto">
           <table className="w-full text-left table-auto">
             <thead>
               <tr className="text-gray-600 font-semibold border-b">
-                <th className="p-2 sm:p-4">Flag Emojis</th>
-                <th className="p-2 sm:p-4">Country Name</th>
-                <th className="p-2 sm:p-4">ID</th>
-                <th className="p-2 sm:p-4">Action</th>
+                <th className="p-4">Flag </th>
+                <th className="p-4">Actual Flag Name</th>
+                <th className="p-4">Id</th>
+                <th className="p-4">Action</th>
               </tr>
             </thead>
             <tbody>
               {flags.map((flag) => (
                 <tr key={flag._id} className="border-b hover:bg-gray-100">
-                  <td className="p-2 sm:p-4">{flag.flagEmojis}</td>
-                  <td className="p-2 sm:p-4">{flag.actualCountryName}</td>
-                  <td className="p-2 sm:p-4">{flag.createdById}</td>
-                  <td className="p-2 sm:p-4">
+                  <td className="p-4">{flag.flagEmojis}</td>
+                  <td className="p-4">{flag.actualCountryName}</td>
+                  <td className="p-4">{flag.createdById}</td>
+                  <td className="p-4">
                     <div className="flex gap-2">
                       {/* Update (Edit) Icon */}
-                      <button onClick={() => handleUpdate(flag._id)}>
+                      <button onClick={() => navigate(`/Change_Flag/${flag._id}`)}>
                         <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
                       </button>
 
