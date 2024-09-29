@@ -50,7 +50,7 @@ async function getFoodById(FoodId) {
     if (!food) {
        return error.generateErrorMessage(404,"Food not found.");
     }
-    return {food};
+    return food;
 }
 async function deleteFood(FoodId) {
 

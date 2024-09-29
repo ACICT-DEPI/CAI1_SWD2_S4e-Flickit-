@@ -1,4 +1,7 @@
-const User = require('../models/User_info'); // Adjust the path as necessary
+const jwt = require("jsonwebtoken");
+const User = require("../models/User_info"); // Adjust the path as necessary
+const dotenv = require("dotenv");
+dotenv.config();
 
 exports.register = async (req, res) => {
   const { username, password, email } = req.body;
@@ -16,7 +19,11 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
-    res.status(201).json({ message: 'Registration successful' });
+
+    // Generate token after successful registration
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '1h' });
+
+    res.status(201).json({ message: 'Registration successful', token });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server error' });
@@ -32,11 +39,15 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    // Check password (you should ideally hash passwords and compare hashed values)
     if (password !== user.password) {
       return res.status(400).json({ message: 'Invalid Password' });
     }
 
-    res.status(200).json({ message: 'Login successful', user });
+    // Generate token after successful login
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'Login successful', token, user });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(500).json({ message: 'Server error' });
