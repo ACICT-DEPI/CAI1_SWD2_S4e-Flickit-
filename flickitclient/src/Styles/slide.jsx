@@ -7,14 +7,31 @@ import { CgGames } from "react-icons/cg";
 import { PiFilmSlateFill } from "react-icons/pi";
 import { GiMeal } from "react-icons/gi";
 import { MdOutlineEmojiFlags } from "react-icons/md";
-import { TbNumbers } from "react-icons/tb";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
- 
+import Swal from 'sweetalert2'; // Ensure this import is included
+
 export const Slide = () => {
     const [open, setOpen] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(null); 
     const [searchQuery, setSearchQuery] = useState(""); // State to store search input
+
+    // Function to handle logout confirmation
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Are You Sure?',
+            text: 'Log out!',
+            icon: 'warning', // Optional: add an icon
+            showCancelButton: true, // Show cancel button
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel' // Optional: add cancel button text
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('username');
+                window.location.href = '/login';    
+            }
+        });
+    };
 
     const Menus = [
         { title: "Dashboards", path:'/Admin', icon: <MdDashboard /> },
@@ -27,11 +44,10 @@ export const Slide = () => {
                 { title: "Films", path: "/Film", icon: <PiFilmSlateFill /> },
                 { title: "Meals", path: "/Meals", icon: <GiMeal /> },
                 { title: "Country & Flags", path: "/flags", icon: <MdOutlineEmojiFlags /> },
-                { title: "Guess the Number", path: "/guess", icon: <TbNumbers /> },
             ],
         },
         { title: "Profile", path: "/profile", spacing: true, icon: <CgProfile /> },
-        { title: "Logout", path: "/logout", icon: <IoLogOutOutline /> },
+        { title: "Logout", path: "#", icon: <IoLogOutOutline />, onClick: handleLogout }, // Changed path to "#" and added onClick
     ];
 
     // Filtered menus based on search input
@@ -47,7 +63,7 @@ export const Slide = () => {
     return (
         <div className="flex">
             <div
-                className={`bg-gradient-to-r from-violet-800 via-sky-600 via-30% to-fuchsia-500 h-screen p-5 pt-8 ${
+                className={`bg-gradient-to-r from-violet-800 via-sky-600 via-30% to-fuchsia-500 max-h-full p-5 pt-8 ${
                     open ? "w-72" : "w-20"
                 } duration-300 relative`}
             >
@@ -99,7 +115,7 @@ export const Slide = () => {
                                     menu.spacing ? "mt-9" : "mt-2"
                                 }`}
                             >
-                                <Link to={menu.path || "#"} className="flex items-center gap-x-4 w-full">
+                                <Link to={menu.path || "#"} className="flex items-center gap-x-4 w-full" onClick={menu.onClick}>
                                     <span className="text-2xl block float-left">
                                         {menu.icon ? menu.icon : <MdDashboard />}
                                     </span>
@@ -138,8 +154,6 @@ export const Slide = () => {
                     ))}
                 </ul>
             </div>
-
-            
         </div>
     );
 };

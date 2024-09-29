@@ -5,29 +5,18 @@ import { Create } from './Create';
 import { Update } from './Update';
 import { Admin } from './Admin.jsx';
 import { Film } from './Film';
-
 import { Meals } from './Meals';
 import { Profile } from './Profile.jsx';
 import { Guess } from './Guess.jsx';
 import { Flags } from './Flags.jsx';
 import { Logout } from './Logout.jsx';
 import Info from './Cardpage/Gameinfo.jsx';
-
-
-
-
-
 export default function App() {
-
-
   return (
   <div>
   <BrowserRouter>
   <div className='flex'> 
 
-
-    
- 
      <Routes>
   <Route path='/' element={<Info/>} ></Route>
       
@@ -44,10 +33,7 @@ export default function App() {
 
   </Routes>
   </div>
-  
 
-
- 
   </BrowserRouter>
   </div>
 

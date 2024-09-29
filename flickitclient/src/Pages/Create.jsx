@@ -1,8 +1,5 @@
 import { useState } from "react";
 import axios from 'axios';
-
-
-
 export function Create() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

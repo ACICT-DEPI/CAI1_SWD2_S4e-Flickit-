@@ -6,6 +6,9 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const moviegameRoute=require('./src/routes/moviegame')
+const flaggameRoute=require('./src/routes/flaggame')
+const foodgameRoute=require('./src/routes/foodGame')
+
 const authRoutes = require("./src/routes/authRoutes");
 const user=require('./src/routes/authRoutes')
 const PORT = process.env.PORT;
@@ -18,9 +21,13 @@ app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors({ origin: "http://localhost:5174"}));
+//app.use(cors());
 
 // Routers
 app.use(moviegameRoute)
+app.use(flaggameRoute)
+app.use(foodgameRoute)
+
 app.use(user)
 
 

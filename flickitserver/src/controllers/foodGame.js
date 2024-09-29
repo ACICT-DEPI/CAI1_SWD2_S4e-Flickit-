@@ -42,6 +42,7 @@ async function getFoodByName(name) {
     return food;
 }
 async function getFoodById(FoodId) {
+    console.log("i am here food");
     if (!FoodId) {
 
         return error.generateErrorMessage(400,"Food ID is required")
@@ -50,7 +51,7 @@ async function getFoodById(FoodId) {
     if (!food) {
        return error.generateErrorMessage(404,"Food not found.");
     }
-    return {food};
+    return food;
 }
 async function deleteFood(FoodId) {
 
@@ -83,13 +84,14 @@ async function updateFood(gameId, updates) {
 }
 async function getAllfood() {
     try {
-        const games = await Food.find(); 
-        return games;
+        const foods = await Food.find(); 
+        return foods;
     } catch (err) {
-        console.error("Error fetching games:", err);
-        return error.generateErrorMessage(500,"Failed to retrieve games. Please try again.");
+        console.error("Error fetching foods:", err);
+        return error.generateErrorMessage(500,"Failed to retrieve foods. Please try again.");
     }
 }
+
 async function getFoodByName(foodName) {
     if (!foodName) {
         return error.generateErrorMessage(400,"Food name is required.");
