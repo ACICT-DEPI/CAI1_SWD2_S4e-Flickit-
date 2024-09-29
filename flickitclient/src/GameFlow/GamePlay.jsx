@@ -5,20 +5,14 @@ import monkey from "../assets/images/monkey.png";
 import monkey2 from "../assets/images/monkey2.png";
 import check from "../assets/images/submitAns.png";
 import reset from "../assets/images/reset.png";
+import deleteIcon from "../assets/images/close.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import swal from "sweetalert2";
-import axios from "axios"
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-const GamePlay=()=>{ 
-    
 
-
-//معايا ال 
-// level ID
-// score
-// status
-// user ID -> needed
+const GamePlay = () => {
 
     const location = useLocation();
     const { score } = location.state || 0;
@@ -26,31 +20,31 @@ const GamePlay=()=>{
 
     const [currentEmoji, setCurrentEmoji] = useState({});
     const navigate = useNavigate();
-    let randomy=0;
+    let randomy = 0;
+
     useEffect(() => {
         const fetchEmojis = async () => {
             try {
                 let response;
-                switch(gameChosen){
-                    case "Guess the Country": response = await axios.get('http://localhost:8000/flags');
+                switch (gameChosen) {
+                    case "Guess the Country":
+                        response = await axios.get('http://localhost:8000/flags');
                         break;
                     case "Guess the Film":
                         console.log("ko");
                         response = await axios.get('http://localhost:8000/games');
                         break;
-                    case "Guess the Meal": response = await axios.get('http://localhost:8000/foods');
+                    case "Guess the Meal":
+                        response = await axios.get('http://localhost:8000/foods');
                         break;
                 }
-                // const response = await axios.get('http://localhost:8000/games');
                 console.log(response.data);
-                // Select a random emoji from the fetched emojis
                 if (response.data.length > 0) {
-                    randomy=Math.floor(Math.random()*response.data.length);
+                    randomy = Math.floor(Math.random() * response.data.length);
                     setCurrentEmoji(response.data[randomy]);
                     console.log(randomy);
                     console.log(currentEmoji._id);
                     console.log(currentEmoji.actualMovieName);
-                   
                 }
             } catch (error) {
                 console.error('Error fetching emojis:', error);
@@ -59,89 +53,94 @@ const GamePlay=()=>{
         fetchEmojis();
     }, []);
 
+    const alpha = ["ذ", "د", "خ", "ح", "ج", "ث", "ت", "ب", "ا", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "ز", "ر", "ى", "و", "ه", "ن", "م", "ل", "ك", "ق", "ف", " "];
+    let ans = useRef("");
+    const inputField = document.getElementById('answerInput');
+    const [tryCount, setTryCount] = useState(2);
 
-const alpha=["ذ","د","خ","ح","ج","ث","ت","ب","ا","غ","ع","ظ","ط","ض","ص","ش","س","ز","ر","ى","و","ه","ن","م","ل","ك","ق","ف"];
-let ans = useRef("");
-const inputField= document.getElementById('answerInput');
-const [tryCount, setTryCount]= useState(2);
-function handleSubmit(){
+    function handleSubmit() {
+        console.log(inputField.value);
+        if (currentEmoji.actualMovieName === inputField.value) {
+            console.log("trueeee");
+            navigate("/ResultsPage", { state: { status: "You are Winner!!!", win: true, score: score * currentEmoji.actualMovieName.length } });
+        } else if (tryCount > 0) {
+            setTryCount(tryCount - 1);
+            swal.fire("Wrong answer", `You have ${tryCount} try left`);
+            inputField.value = "";
+        } else {
+            navigate("/ResultsPage", { state: { status: "Loser..", win: false, score: 0 } });
+        }
+    }
 
-   console.log(inputField.value);
-    if(currentEmoji.actualMovieName===inputField.value){
-        console.log("trueeee");
-        navigate("/ResultsPage", { state: { status: "You are Winner!!!", win: true ,score:score*currentEmoji.actualMovieName.length } });
-    }else if(tryCount>0){
-        setTryCount(tryCount-1);
-        swal.fire("Wrong answer", `You have ${tryCount} try left`);
-        inputField.value="";
+    function handleClick(alphab) {
+        inputField.value += alphab.alph;
+        console.log(inputField);
+        console.log("euiejw", alphab.alph);
     }
-    else {
-        navigate("/ResultsPage", { state: { status: "Loser..", win: false ,score:0 } });
+
+    function handleReset() {
+        inputField.value = "";
     }
-}
-function handleClick(alphab){
-    inputField.value +=alphab.alph;
-    console.log(inputField);
-    console.log("euiejw", alphab.alph);
-}
-function handleReset(){
-    inputField.value="";
-}
+
+    // New function for handling delete
+    function handleDelete() {
+        inputField.value = inputField.value.slice(0, -1); // Remove the last character
+    }
+
     return (
-        <div className="flex " >
+        <div className="flex ">
             <div className="fixed top-0 w-full z-10">
-               <Navbar /> 
+                <Navbar />
             </div>
-            <div className=" relative flex-grow flex justify-center bg-gray-200  h-screen " style={{
+            <div className="relative flex-grow flex justify-center bg-gray-200 h-screen" style={{
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
             }}>
                 <div className="playing-window flex-wrap  items-center justify-center lg:w-3/5 sm:w-4/5 top-0 mt-16 mb-32">
-                <img className="absolute right-0 w-1/5 h-2/3 top-24 sm:h-1/3" src={monkey}></img>
-                <img className="absolute left-0 bottom-0 w-1/4 h-2/3 sm:h-1/3" src={monkey2}></img>
+                    <img className="absolute right-0 w-1/5 h-2/3 top-24 sm:h-1/3" src={monkey}></img>
+                    <img className="absolute left-0 bottom-0 w-1/4 h-2/3 sm:h-1/3" src={monkey2}></img>
 
-                <div className="absolute lg:right-24 top-24 sm:right-12 items-center justify-center"> 
-                    <p className="lg:text-3xl sm:text-2xl font-bold  font-Risque text-yellow-400 "> YOUR SCORE </p>
-                    <p className="lg:text-4xl sm:text-2xl font-bold  font-Risque text-yellow-400 ml-24 "> X{score} </p>
-                </div>
+                    <div className="absolute lg:right-24 top-24 sm:right-12 items-center justify-center">
+                        <p className="lg:text-3xl sm:text-2xl font-bold font-Risque text-yellow-400"> YOUR SCORE </p>
+                        <p className="lg:text-4xl sm:text-2xl font-bold font-Risque text-yellow-400 ml-24"> X{score} </p>
+                    </div>
+
                     {/* sentence */}
-                <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center	"> 
-                     <p className="text-3xl font-bold text-white font-Risque text-stone-50 "> {gameChosen} from emoji </p>
-                </div>
-                  {/* game emoji */}
-                <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center	"> 
-                    <div className=" lg:text-7xl  sm:text-5xl bg-gray-100 lg:w-1/2 sm:w-full  h-36 border-8 rounded-3xl border-yellow-600 flex justify-center items-center">
-                            {currentEmoji.movieEmojis} 
+                    <div className="w-full h-1/5 relative top-0 flex-grow flex justify-center items-center">
+                        <p className="text-3xl font-bold text-white font-Risque text-stone-50 "> {gameChosen} from emoji </p>
+                    </div>
+
+                    {/* game emoji */}
+                    <div className="w-full h-1/5 relative top-0 flex-grow flex justify-center items-center">
+                        <div className="lg:text-7xl sm:text-5xl bg-gray-100 lg:w-1/2 sm:w-full h-36 border-8 rounded-3xl border-yellow-600 flex justify-center items-center">
+                            {currentEmoji.movieEmojis}
+                        </div>
+                    </div>
+
+                    {/* answer, reset, submit, delete */}
+                    <div className="w-full h-fit relative top-0 flex-grow flex justify-center items-center">
+                        <img className="w-16 h-16" onClick={handleReset} src={reset}></img>
+                        <input id="answerInput" className="w-96 border-2 rounded-xl border-black p-2 bg-gray-100 m-2 text-right text-2xl" ref={ans} />
+                        <img className="w-16 h-16" onClick={handleSubmit} src={check}></img>
+                        <img className="w-16 h-16" onClick={handleDelete} src={deleteIcon}></img> {/* Delete button */}
+                    </div>
+
+                    {/* alphabet buttons */}
+                    <div className="w-full m-6 relative top-0 flex-wrap flex items-center justify-center">
+                        {alpha.map(alph => {
+                            return <button id={alph} className="border-solid rounded-2xl border-2 w-16 h-16 m-2 mb-4 pb-1 text-white text-3xl bg-gradient-to-b from-green-500 to-green-400 hover:bg-gray-400" onClick={() => { handleClick({ alph }) }}> {alph} </button>
+                        })}
                     </div>
                 </div>
-                  {/* space */}
-                <div className="w-full h-1/10 relative top-0 flex-grow  flex justify-center items-center	"> 
-                      <p className="h-6">  </p>
-                </div>
-                  {/* answer, hint , submit */}
-                <div className="w-full h-fit relative top-0 flex-grow  flex justify-center items-center	"> 
-                    <img className="w-16 h-16 " onClick={handleReset} src={reset}></img>
-                    <input id="answerInput" className="w-96 border-2 rounded-xl border-black p-2 bg-gray-100 m-2 text-right text-2xl" ref={ans} value={""}/>
-                    <img className="w-16 h-16 " onClick={handleSubmit} src={check}></img>
-                    
-                </div>
-                  {/* buttons */}
-                <div className="w-full m-6 relative top-0 flex-wrap flex items-center justify-center 	"> 
-                    {alpha.map( alph => {
-                        return  <button id={alph} className="border-solid rounded-2xl border-2 w-16 h-16 m-2 mb-4 pb-1 text-white text-3xl bg-gradient-to-b from-green-500  to-green-400 hover:bg-gray-400" onClick={()=>{handleClick({alph})}}> {alph} </button>
-                    })}
-                </div>
-                </div>
-
-
             </div>
-             <div className="absolute bottom-0 right-0 flex flex-col items-center mb-4 mr-4">
+
+            <div className="absolute bottom-0 right-0 flex flex-col items-center mb-4 mr-4">
                 <img src={logo} alt="Flickit Logo" className="h-16 mb-2" />
                 <p className="text-3xl font-bold text-white">Flickit!</p>
             </div>
         </div>
-    )
+    );
 }
 
 export default GamePlay;

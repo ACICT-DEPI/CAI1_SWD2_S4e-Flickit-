@@ -92,7 +92,7 @@ export function Meals() {
                   <td className="p-4">
                     <div className="flex gap-2">
                       {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/update/${meal._id}`)}>
+                      <button onClick={() => navigate(`/EditFood/${meal._id}`)}>
                         <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
                       </button>
 

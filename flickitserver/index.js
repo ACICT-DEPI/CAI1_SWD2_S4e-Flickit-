@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors({ origin: "http://localhost:5174"}));
+app.use(cors({ origin: "http://localhost:5173"}));
 //app.use(cors());
 
 // Routers

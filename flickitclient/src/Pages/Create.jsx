@@ -18,7 +18,7 @@ export function Create() {
         setMessage('');
 
         try {
-            const result = await axios.post("http://localhost:3000/create", { name, email });
+            const result = await axios.post("http://localhost:8000/create", { name, email });
             console.log(result);
             setMessage('User created successfully!');
         } catch (err) {

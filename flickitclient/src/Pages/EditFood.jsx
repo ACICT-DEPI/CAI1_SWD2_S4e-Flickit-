@@ -17,7 +17,7 @@ const EditFood = () => {
 
     useEffect(() => {
         const fetchfoodData = async () => {
-            try {
+            try { 
                 const response = await axios.get(`http://localhost:8000/food/${id}`); 
                 const foodData = response.data;
                 setfoodEmojis(foodData.foodEmojis);
