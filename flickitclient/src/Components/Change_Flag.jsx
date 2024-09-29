@@ -1,107 +1,134 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import GameBar from '../Components/gameBar';
+import Button from '../Components/Button';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-import { MdEdit, MdDelete } from "react-icons/md";
-import { Slide } from '../Styles/slide';
-import swal from "sweetalert2";
-import { PiFilmSlateFill } from "react-icons/pi";
+import Swal from 'sweetalert2';
+import { useParams } from 'react-router-dom';
+import logo from '../assets/images/question-mark.png';
+import Navbar from "../Components/NavBar";
+import backgroundImage from "../assets/images/Background.jpg";
 
-export function Change_Flag() {
-  const [flags, setflag] = useState([]);
-  const navigate = useNavigate();
+const Change_Flag = () => {
+    const { id } = useParams(); 
+    const [flagEmojis, setflagEmojis] = useState('');
+    const [actualFlagName, setactualFlagName] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-  // Fetch films from the backend
-  useEffect(() => {
-    axios
-      .get('http://localhost:8000/games') 
-      .then((response) => setflag(response.data))
-      .catch((error) => console.log('Error fetching flags:', error));
-  }, []);
+    useEffect(() => {
+        const fetchflagData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/flag/${id}`); // Replace with your actual API endpoint
+                const flagData = response.data;
+                setflagEmojis(flagData.flagEmojis);
+                setactualFlagName(flagData.actualFlagName);
+            } catch (error) {
+                console.error("Error fetching flag data:", error);
+                setErrorMessage("Error fetching flag data.");
+            }
+        };
+        
+        fetchflagData();
+    }, [id]);
 
-  // Delete film function
-  const handleDelete = (flagId) => {
-    swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to delete this flag? This action cannot be undone.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/game/${flagId}`) 
-          .then((response) => {
-            setflag((prevflags) => prevflags.filter((flag => flag._id !== flagId)));
-            swal.fire({
-              title: "Success",
-              text: response.data.message || "Flag deleted successfully.",
-              icon: "success",
-              confirmButtonText: "OK"
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        setErrorMessage('');
+
+        // Check if any input is empty and show SweetAlert
+        if (!flagEmojis || !actualFlagName) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Fields',
+                text: 'Both fields are required. Please fill in all fields.',
+                confirmButtonColor: '#7209B7',
             });
-          })
-          .catch((error) => {
-            console.error("Error deleting flag: ", error);
-            swal.fire({
-              title: "Error",
-              text: "Failed to delete flag. Please try again.",
-              icon: "error",
-              confirmButtonText: "OK"
+            setLoading(false);
+            return;
+        }
+
+        const payload = {
+          flagEmojis,
+            actualFlagName,
+        };
+
+        try {
+            // Use 'id' instead of 'gameId'
+            const response = await axios.put(`http://localhost:8000/flag/${id}`, payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
-          });
-      }
-    });
-  };
 
-  return (
-    <div className="flex flex-col lg:flex-row">
-      <Slide />
-      <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
-        {/* Header with Film Icon */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
-          <PiFilmSlateFill className="text-4xl text-white" />
-          <div>
-            <p className="text-white text-lg">Flag</p>
-            <p className="text-white text-2xl font-bold">{flags.length}</p>
-          </div>
-        </div>
-        {/* Film Table */}
-        <div className="w-full lg:w-2/3 bg-white rounded-md p-5 sm:p-10 m-5 shadow-lg overflow-x-auto">
-          <table className="w-full text-left table-auto">
-            <thead>
-              <tr className="text-gray-600 font-semibold border-b">
-                <th className="p-4">Flag </th>
-                <th className="p-4">Actual Flag Name</th>
-                <th className="p-4">Id</th>
-                <th className="p-4">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {flags.map((flag) => (
-                <tr key={flag._id} className="border-b hover:bg-gray-100">
-                  <td className="p-4">{flag.flagEmojis}</td>
-                  <td className="p-4">{flag.actualCountryName}</td>
-                  <td className="p-4">{flag.createdById}</td>
-                  <td className="p-4">
-                    <div className="flex gap-2">
-                      {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/Change_Flag/${flag._id}`)}>
-                        <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
-                      </button>
+            console.log("Flag updated:", response.data);
 
-                      {/* Delete Icon */}
-                      <button onClick={() => handleDelete(flag._id)}>
-                        <MdDelete className="text-red-500 hover:text-red-700 text-xl cursor-pointer" />
-                      </button>
+            // Show SweetAlert success message
+            Swal.fire({
+                icon: 'success',
+                title: 'flag Updated!',
+                text: 'The flag has been successfully updated.',
+                confirmButtonColor: '#7209B7',
+            });
+        } catch (error) {
+            setErrorMessage("Error updating flag: " + (error.response?.data.message || error.message));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div 
+            className="min-h-screen flex flex-col bg-gray-100 relative" 
+            style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
+            <Navbar />
+            <div className="flex justify-center items-center flex-grow w-full h-full"> 
+                <div className="flex justify-around items-center flex-grow w-full h-full">
+                    <form onSubmit={handleSubmit} className='flex flex-col pb-8 border border-gray-500 items-center justify-start bg-opacity-60 w-1/3 rounded-lg bg-[#290346]'>
+                        <GameBar />
+                        <div className="w-full px-6">
+                            <div className="mb-4 w-full">
+                                <label className="block text-xl text-white font-DancingScript mb-2">Flag</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter Flag ...."
+                                    className="bg-transparent border border-gray-500 w-full p-2 rounded-md text-white text-lg focus:outline-none focus:ring-2 focus:ring-[#7209B7]"
+                                    value={flagEmojis}
+                                    onChange={(e) => setflagEmojis(e.target.value)}
+                                />
+                            </div>
+                            <div className="mb-6 w-full">
+                                <label className="block text-xl text-white font-DancingScript mb-2">Movie Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter movie name ......"
+                                    className="bg-transparent border border-gray-500 w-full p-2 rounded-md text-white text-lg focus:outline-none focus:ring-2 focus:ring-[#7209B7]"
+                                    value={actualFlagName}
+                                    onChange={(e) => setactualFlagName(e.target.value)}
+                                />
+                            </div>
+                            {loading && <p className="text-white">Updating Flag...</p>}
+                            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                            <Button
+                                type="submit"
+                                style="w-full text-white py-2 bg-[#7209B7] hover:bg-[#560BAD] rounded-lg text-2xl font-Risque tracking-wide transition duration-300 text-center"
+                                text="Update"
+                            />
+                        </div>
+                    </form>
+                    <div className="flex flex-col justify-center items-center">
+                        <img src={logo} alt="Flickit Logo" className="mb-2 w-5/6 h52/6" />
+                        <h1 className="text-white text-4xl font-Risque">Flickit!</h1>
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
+
+export default Change_Flag;

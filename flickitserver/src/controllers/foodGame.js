@@ -42,6 +42,7 @@ async function getFoodByName(name) {
     return food;
 }
 async function getFoodById(FoodId) {
+    console.log("i am here food");
     if (!FoodId) {
 
         return error.generateErrorMessage(400,"Food ID is required")
