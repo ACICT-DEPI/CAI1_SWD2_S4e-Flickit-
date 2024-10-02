@@ -6,7 +6,8 @@ import backgroundImage from "../assets/images/Background.jpg";
 import swal from "sweetalert2";
 import Navbar from '../Components/NavBar';
 import Cookies from 'js-cookie'; 
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -17,38 +18,30 @@ const LoginPage = () => {
   
     // Check for admin credentials
     if (username === 'admin' && password === '1111111111') {
-      swal.fire({
-        title: "Success",
-        text: "Welcome, Admin!",
-        icon: "success",
-        confirmButtonText: "OK"
-      }).then(() => {
+      toast.success("Welcome, Admin!");
+      setTimeout(() => {
         localStorage.setItem('username', username);
-        navigate('/admin'); // Redirect to admin page
-      });
-      return; // Exit the function
+        navigate('/admin');
+      }, 1000);
+      return;
     }
 
-    // If not admin, proceed with the loginUser function
+    // Proceed with loginUser function
     try {
       const data = await loginUser({ username, password });
       
-      swal.fire({
-        title: "Success",
-        text: data.message,
-        icon: "success",
-        confirmButtonText: "OK"
-      }).then(() => {
-        Cookies.set('token', data.token, { expires: 7 }); 
+      toast.success(data.message);
+      setTimeout(() => {
+        Cookies.set('token', data.token, { expires: 7 });
         localStorage.setItem('username', username);
         navigate('/GamesPage');
-      });
+      }, 1000);
       
     } catch (error) {
       if (error.response) {
-        swal.fire("Error", error.response.data.message, "error");
+        toast.error(error.response.data.message);
       } else {
-        swal.fire("Error", "An unexpected error occurred", "error");
+        toast.error("An unexpected error occurred");
       }
       console.log(error);
     }
@@ -108,7 +101,15 @@ const LoginPage = () => {
           </form>
         </div>
       </div>
-  
+      <ToastContainer
+        className="custom-toast-container"
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
       <div className="absolute bottom-0 right-0 flex flex-col items-center mb-4 mr-4">
         <img src={logo} alt="Flickit Logo" className="h-16 mb-2" />
         <p className="text-3xl font-bold text-white">Flickit!</p>

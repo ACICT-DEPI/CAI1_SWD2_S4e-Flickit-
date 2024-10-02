@@ -6,7 +6,7 @@ import monkey2 from "../assets/images/monkey2.png";
 import stars from "../assets/images/star.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import axios from "axios"
+// import axios from "axios"
 const ResultsPage=()=>{
     const location = useLocation();
     const navigate = useNavigate();
@@ -34,16 +34,16 @@ const ResultsPage=()=>{
 
                 <div className="Results-window flex-wrap items-center justify-center lg:w-1/3 sm:w-4/5 h-96 top-0 mt-16 mb-32 border-2 rounded-3xl pt-12">
                     <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center"> 
-                        <p className={`text-3xl font-bold text-white font-Risque text-stone-50`}> Welcome Back, Hey YOU!! </p>
+                        <p className={`text-3xl font-bold  font-Risque text-stone-50`}> Welcome Back, Hey YOU!! </p>
                     </div>
                     <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center"> 
-                        <p className={`text-3xl font-bold text-white font-Risque text-stone-50 ${win? "text-green-400":"text-red-600"}`}> {status}</p>
+                        <p className={`text-3xl font-bold  font-Risque text-stone-50 ${win? "text-green-400":"text-red-600"}`}> {status}</p>
                     </div>
                     <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center	"> 
-                        <p className="text-3xl font-bold text-white font-Risque text-stone-50">your score in this level : </p>
+                        <p className="text-3xl font-bold  font-Risque text-stone-50">your score in this level : </p>
                     </div>
                     <div className="w-full h-1/5  relative top-0 flex-grow  flex justify-center items-center	"> 
-                        <p className="text-3xl font-bold text-white font-Risque text-stone-50"> {score} </p>
+                        <p className="text-3xl font-bold  font-Risque text-stone-50"> {score} </p>
                     </div>
                 </div>
 

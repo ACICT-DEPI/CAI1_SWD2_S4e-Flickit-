@@ -31,27 +31,28 @@ const GamePlay = () => {
                         response = await axios.get('http://localhost:8000/flags');
                         break;
                     case "Guess the Film":
-                        console.log("ko");
                         response = await axios.get('http://localhost:8000/games');
                         break;
                     case "Guess the Meal":
                         response = await axios.get('http://localhost:8000/foods');
                         break;
                 }
-                console.log(response.data);
+                console.log("API Response for Meals:", response.data); // Log the entire response for meals
+        
                 if (response.data.length > 0) {
-                    randomy = Math.floor(Math.random() * response.data.length);
-                    setCurrentEmoji(response.data[randomy]);
-                    console.log(randomy);
-                    console.log(currentEmoji._id);
-                    console.log(currentEmoji.actualMovieName);
+                    const randomIndex = Math.floor(Math.random() * response.data.length);
+                    setCurrentEmoji(response.data[randomIndex]);
+                    console.log("Selected Emoji Data for Meal Game:", response.data[randomIndex]); // Log the selected emoji
                 }
             } catch (error) {
                 console.error('Error fetching emojis:', error);
             }
         };
+        
+        
         fetchEmojis();
-    }, []);
+    }, [gameChosen]);
+    
 
     const alpha = ["ذ", "د", "خ", "ح", "ج", "ث", "ت", "ب", "ا", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "ز", "ر", "ى", "و", "ه", "ن", "م", "ل", "ك", "ق", "ف", " "];
     let ans = useRef("");
@@ -59,10 +60,39 @@ const GamePlay = () => {
     const [tryCount, setTryCount] = useState(2);
 
     function handleSubmit() {
-        console.log(inputField.value);
-        if (currentEmoji.actualMovieName === inputField.value) {
-            console.log("trueeee");
-            navigate("/ResultsPage", { state: { status: "You are Winner!!!", win: true, score: score * currentEmoji.actualMovieName.length } });
+        console.log("Current Emoji Data:", currentEmoji); // Check currentEmoji content
+        let correctAnswer;
+
+        if (gameChosen === "Guess the Film") {
+            correctAnswer = currentEmoji?.actualMovieName;
+        } else if (gameChosen === "Guess the Country") {
+            correctAnswer = currentEmoji?.actualCountryName;
+        } else if (gameChosen === "Guess the Meal") {
+            correctAnswer = currentEmoji?.actualFoodName; // Change made here
+        }
+        
+
+// Check if correctAnswer was set
+if (!correctAnswer) {
+    console.error("Correct answer is undefined for the selected game", currentEmoji, gameChosen);
+    swal.fire("Error", "The game data is not set correctly.", "error");
+    return;
+}
+
+        
+    
+        // Normalize answers for comparison
+        const userAnswer = inputField.value.trim().normalize('NFC').toLowerCase();
+        const expectedAnswer = correctAnswer.trim().normalize('NFC').toLowerCase();
+    
+        // Debugging output
+        console.log("User answer (normalized):", userAnswer);
+        console.log("Correct answer (normalized):", expectedAnswer);
+    
+        // Compare the normalized and trimmed answers
+        if (userAnswer === expectedAnswer) {
+            console.log("Correct answer");
+            navigate("/ResultsPage", { state: { status: "You are Winner!!!", win: true, score: score * correctAnswer.length } });
         } else if (tryCount > 0) {
             setTryCount(tryCount - 1);
             swal.fire("Wrong answer", `You have ${tryCount} try left`);
@@ -71,6 +101,8 @@ const GamePlay = () => {
             navigate("/ResultsPage", { state: { status: "Loser..", win: false, score: 0 } });
         }
     }
+    
+    
 
     function handleClick(alphab) {
         inputField.value += alphab.alph;
@@ -108,18 +140,21 @@ const GamePlay = () => {
 
                     {/* sentence */}
                     <div className="w-full h-1/5 relative top-0 flex-grow flex justify-center items-center">
-                        <p className="text-3xl font-bold text-white font-Risque text-stone-50 "> {gameChosen} from emoji </p>
+                        <p className="text-3xl font-bold  font-Risque text-stone-50 "> {gameChosen} from emoji </p>
                     </div>
 
                     {/* game emoji */}
-                    <div className="w-full h-1/5 relative top-0 flex-grow flex justify-center items-center">
-                        <div className="lg:text-7xl sm:text-5xl bg-gray-100 lg:w-1/2 sm:w-full h-36 border-8 rounded-3xl border-yellow-600 flex justify-center items-center">
-                            {currentEmoji.movieEmojis}
-                        </div>
-                    </div>
+                    <div className="w-full h-1/5 relative top-0 flex-grow flex justify-center items-center mt-4">
+    <div className="lg:text-7xl sm:text-5xl bg-gray-100 lg:w-1/2 sm:w-full h-36 border-8 rounded-3xl border-yellow-600 flex justify-center items-center">
+        {gameChosen === "Guess the Film" && currentEmoji.movieEmojis}
+        {gameChosen === "Guess the Country" && currentEmoji.flagEmojis}
+        {gameChosen === "Guess the Meal" && currentEmoji.foodEmojis}
+    </div>
+</div>
+
 
                     {/* answer, reset, submit, delete */}
-                    <div className="w-full h-fit relative top-0 flex-grow flex justify-center items-center">
+                    <div className="w-full h-fit relative top-0 flex-grow flex justify-center items-center mt-8 ml-5">
                         <img className="w-16 h-16" onClick={handleReset} src={reset}></img>
                         <input id="answerInput" className="w-96 border-2 rounded-xl border-black p-2 bg-gray-100 m-2 text-right text-2xl" ref={ans} />
                         <img className="w-16 h-16" onClick={handleSubmit} src={check}></img>
@@ -129,7 +164,7 @@ const GamePlay = () => {
                     {/* alphabet buttons */}
                     <div className="w-full m-6 relative top-0 flex-wrap flex items-center justify-center">
                         {alpha.map(alph => {
-                            return <button id={alph} className="border-solid rounded-2xl border-2 w-16 h-16 m-2 mb-4 pb-1 text-white text-3xl bg-gradient-to-b from-green-500 to-green-400 hover:bg-gray-400" onClick={() => { handleClick({ alph }) }}> {alph} </button>
+                            return <button id={alph} key={alph} className="border-solid rounded-2xl border-2 w-16 h-16 m-2 mb-4 pb-1 text-white text-3xl bg-gradient-to-b from-green-500 to-green-400 hover:bg-gray-400" onClick={() => { handleClick({ alph }) }}> {alph} </button>
                         })}
                     </div>
                 </div>
