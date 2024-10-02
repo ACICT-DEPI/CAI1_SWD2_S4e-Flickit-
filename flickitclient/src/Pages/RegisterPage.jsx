@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate
 import { createUser } from "../api/userApi";
-import swal from "sweetalert2";
+// import swal from "sweetalert2";
 import logo from "../assets/images/question-mark.png";
 import backgroundImage from "../assets/images/Background.jpg";
 import HomeNavBar from '../Components/HomeNavBar';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ const RegisterPage = () => {
     password: "",
   });
 
-  const navigate = useNavigate(); // Added for navigation
+  const navigate = useNavigate();
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,18 +25,18 @@ const RegisterPage = () => {
     const { username, password, email } = formData;
 
     if (username.length < 4 || /^\d+$/.test(username)) {
-      swal.fire("Error", "Username must be at least 4 characters and cannot be only numbers", "error");
+      toast.error("Username must be at least 4 characters and cannot be only numbers");
       return false;
     }
 
     if (password.length < 4) {
-      swal.fire("Error", "Password must be at least 4 characters", "error");
+      toast.error("Password must be at least 4 characters");
       return false;
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-      swal.fire("Error", "Please enter a valid email address", "error");
+      toast.error("Please enter a valid email address");
       return false;
     }
 
@@ -43,23 +45,27 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) return;
-
+  
     try {
       await createUser(formData);
-      swal.fire("Success", "User Created", "success");
-
-      navigate('/login');
+      toast.success("User Created");
+  
+      // Add a delay before navigating
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // 2 seconds delay
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        swal.fire("Error", "Username already exists", "error");
+        toast.error("Username already exists");
       } else {
-        swal.fire("Error", "Failed to create User", "error");
+        toast.error("Failed to create User");
       }
       console.log(error);
     }
   };
+  
 
   return (
     <div
@@ -117,6 +123,14 @@ const RegisterPage = () => {
             >
               Register
             </button>
+            <ToastContainer  className="custom-toast-container"
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  closeOnClick
+  pauseOnHover
+  draggable
+  toastClassName="custom-toast-container" />
 
           </form>
         </div>
@@ -125,6 +139,7 @@ const RegisterPage = () => {
         <img src={logo} alt="Flickit Logo" className="h-16 mb-2" />
         <p className="text-3xl font-bold text-white">Flickit!</p>
       </div>
+
     </div>
   );
 };
