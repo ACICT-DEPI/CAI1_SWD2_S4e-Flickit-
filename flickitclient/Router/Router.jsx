@@ -23,6 +23,9 @@ import EditFilm from '../src/Components/EditFilm.jsx';
 import EditFood  from '../src/Pages/EditFood.jsx';
 import Change_Flag from '../src/Components/Change_Flag.jsx';
 import GamePage from '../src/Pages/gamePage.jsx' 
+import TicTacToeGame from '../src/Pages/TicTacToeGame.jsx';
+import Info from '../src/Cardpage/Info.jsx';
+import Rock_Paper_Scissors from '../src/Pages/Rock_Paper_Scissors.jsx';
 // import EditFood from '../src/Pages/EditFood.jsx'
 // import {EditFilm} from '../src/Components/EditFilm.jsx';
 // import EditFilm from '../src/Pages/EditFilm.jsx';
@@ -56,7 +59,10 @@ export default function Router() {
       {
         path: "/Admin",
         element: <Admin />,
-      },    
+      },     {
+        path: "/info",
+        element: <Info />,
+      },
       {
         path: "/Film",
         element: <Film />,
@@ -118,7 +124,15 @@ export default function Router() {
       {
         path: "/gamePage",
         element: <GamePage />,
-      }                                       
+      }   ,  
+      {
+        path: "/TicTacToeGame",
+        element: <TicTacToeGame />,
+      },     
+      {
+        path: "/Rock_Paper_Scissors",
+        element: <Rock_Paper_Scissors />,
+      },                               
         ]);
     return <RouterProvider router={router} />;
 }

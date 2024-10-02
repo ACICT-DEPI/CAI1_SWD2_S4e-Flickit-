@@ -37,12 +37,12 @@ const GamePlay = () => {
                         response = await axios.get('http://localhost:8000/foods');
                         break;
                 }
-                console.log("API Response for Meals:", response.data); // Log the entire response for meals
+                console.log("API Response for Meals:", response.data);
         
                 if (response.data.length > 0) {
                     const randomIndex = Math.floor(Math.random() * response.data.length);
                     setCurrentEmoji(response.data[randomIndex]);
-                    console.log("Selected Emoji Data for Meal Game:", response.data[randomIndex]); // Log the selected emoji
+                    console.log("Selected Emoji Data for Meal Game:", response.data[randomIndex]); 
                 }
             } catch (error) {
                 console.error('Error fetching emojis:', error);
