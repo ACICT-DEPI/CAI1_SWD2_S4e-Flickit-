@@ -3,7 +3,7 @@ import Card from "./Card";
 import backgroundImage from "../assets/images/Background.jpg";
 import Navbar from "../Components/NavBar"
 import { useNavigate } from "react-router-dom";
-
+import Button from '../Components/Button';
 function Info() {
   const navigate = useNavigate();
 
@@ -26,6 +26,12 @@ function Info() {
       }}
     >
       <Navbar />
+      <div className="absolute top-24 right-10" onClick={()=> {navigate("/dashboard");}}> 
+        <Button 
+                text="DashBoard" 
+                style="cursor-pointer bg-yellow-500 w-[200px] h-[60px] flex justify-center items-center rounded-2xl border-2 border-white font-Risque text-3xl mb-8"
+            /></div>
+      
       <span>
         <h1 className="text-white text-4xl font-Risque">Flickit Games</h1>
       </span>

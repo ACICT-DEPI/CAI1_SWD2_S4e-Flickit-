@@ -26,6 +26,7 @@ import GamePage from '../src/Pages/gamePage.jsx'
 import TicTacToeGame from '../src/Pages/TicTacToeGame.jsx';
 import Info from '../src/Cardpage/Info.jsx';
 import Rock_Paper_Scissors from '../src/Pages/Rock_Paper_Scissors.jsx';
+import Dashboard from '../src/Dashboard/Dashboard.jsx'
 // import EditFood from '../src/Pages/EditFood.jsx'
 // import {EditFilm} from '../src/Components/EditFilm.jsx';
 // import EditFilm from '../src/Pages/EditFilm.jsx';
@@ -132,7 +133,11 @@ export default function Router() {
       {
         path: "/Rock_Paper_Scissors",
         element: <Rock_Paper_Scissors />,
-      },                               
+      },      
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      }                             
         ]);
     return <RouterProvider router={router} />;
 }

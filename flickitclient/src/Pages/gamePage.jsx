@@ -40,6 +40,7 @@ function GamePage() {
             }}
         >
             <Navbar />
+            
             <div className="flex justify-center items-center flex-col mt-10">
                 <Card emoji={emoji} title={game} description={description}/>
 {game==="Guess by Number" ?                 <Button
