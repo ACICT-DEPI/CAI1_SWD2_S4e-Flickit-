@@ -9,14 +9,14 @@ export function Update() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/users/${userId}`)
+      .get(`http://localhost:8000/users/${userId}`)
       .then((response) => setUser(response.data))
       .catch((error) => console.log(error));
   }, [userId]);
 
   const handleUpdate = () => {
     axios
-      .put(`http://localhost:3000/users/${userId}`, user)
+      .put(`http://localhost:8000/users/${userId}`, user)
       .then(() => {
         navigate('/'); // Redirect back to user list
       })

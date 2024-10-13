@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
 import { GiMeal } from "react-icons/gi";
 
-export function Meals () {
-  const [meals, setmeal] = useState([]);
+export function Meals() {
+  const [food, setfood] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch meals from the backend
+  // Fetch food from the backend
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/Meals') // Ensure the endpoint matches your backend route
-      .then((response) => setmeal(response.data))
-      .catch((error) => console.log('Error fetching Meals:', error));
+      .get('http://localhost:8000/foods')
+      .then((response) => {
+        console.log("Fetched food data:", response.data); // Log the data
+        setfood(response.data);
+      })
+      .catch((error) => console.log('Error fetching food:', error));
   }, []);
+  
 
-  // Delete meal function
-  const handleDelete = (mealId) => {
+  // Delete food function
+  const handleDelete = (foodId) => {
     swal.fire({
       title: "Are you sure?",
-      text: "Do you really want to delete this meal? This action cannot be undone.",
+      text: "Do you really want to delete this food? This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -31,21 +35,21 @@ export function Meals () {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/api/Meals/${mealId}`)
+        axios.delete(`http://localhost:8000/food/${foodId}`)
           .then((response) => {
-            setmeal((prevmeals) => prevmeals.filter((meal) => meal._id !== mealId));
+            setfood((prevFoods) => prevFoods.filter((food) => food._id !== foodId));
             swal.fire({
               title: "Success",
-              text: response.data.message || "Meal deleted successfully.",
+              text: response.data.message || "Food deleted successfully.",
               icon: "success",
               confirmButtonText: "OK"
             });
           })
           .catch((error) => {
-            console.error("Error deleting meal: ", error);
+            console.error("Error deleting food: ", error);
             swal.fire({
               title: "Error",
-              text: "Failed to delete meal. Please try again.",
+              text: "Failed to delete food. Please try again.",
               icon: "error",
               confirmButtonText: "OK"
             });
@@ -60,11 +64,11 @@ export function Meals () {
 
       <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
         {/* Header with Meals Icon */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
+        <div className="flex items-center gap-4 bg-gradient-to-r from-red-700 p-5 rounded-xl shadow-lg mb-8">
           <GiMeal className="text-4xl text-white" />
           <div>
             <p className="text-white text-lg">Meals</p>
-            <p className="text-white text-2xl font-bold">{meals.length}</p>
+            <p className="text-white text-2xl font-bold">{food.length}</p>
           </div>
         </div>
 
@@ -80,7 +84,7 @@ export function Meals () {
               </tr>
             </thead>
             <tbody>
-              {meals.map((meal) => (
+              {food.map((meal) => (
                 <tr key={meal._id} className="border-b hover:bg-gray-100">
                   <td className="p-4">{meal.foodEmojis}</td>
                   <td className="p-4">{meal.actualFoodName}</td>
@@ -88,7 +92,7 @@ export function Meals () {
                   <td className="p-4">
                     <div className="flex gap-2">
                       {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/update/${meal._id}`)}>
+                      <button onClick={() => navigate(`/EditFood/${meal._id}`)}>
                         <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
                       </button>
 

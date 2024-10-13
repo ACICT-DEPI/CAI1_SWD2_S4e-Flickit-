@@ -20,8 +20,8 @@ export default function App() {
      <Routes>
   <Route path='/' element={<Info/>} ></Route>
       
-  <Route path='/Admin' element={<Admin/>}> </Route>
-  <Route path='/Film' element={<Film/>}> </Route>
+    <Route path='/Admin' element={<Admin/>}> </Route>
+    <Route path='/Film' element={<Film/>}> </Route>
     <Route path='/Users' element={<Users/>}> </Route>
     <Route path='/create' element={<Create/>}> </Route>
     <Route path='/update' element={<Update/>}> </Route>

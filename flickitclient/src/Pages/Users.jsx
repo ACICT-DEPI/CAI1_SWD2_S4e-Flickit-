@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import { MdEdit, MdDelete, MdPerson } from "react-icons/md";
+import {  MdDelete, MdPerson } from "react-icons/md";
 import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
 
@@ -30,7 +30,7 @@ export function Users() {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/api/users/${userId}`)
+        axios.delete(`http://localhost:8000/api/users/${userId}`) // Use backticks here
           .then((response) => {
             setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
             swal.fire({
@@ -60,40 +60,37 @@ export function Users() {
       <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
         {/* Header with User Icon */}
         <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
-          <MdPerson className="text-4xl text-white" />
+          <MdPerson className="text-5xl text-white" />
           <div>
-            <p className="text-white text-lg">Users</p>
-            <p className="text-white text-2xl font-bold">{users.length}</p>
+            <p className="text-white text-xl">Users</p>
+            <p className="text-white text-3xl font-bold">{users.length}</p>
           </div>
         </div>
 
         {/* User Table */}
-        <div className="w-full lg:w-2/3 bg-white rounded-md p-5 sm:p-10 m-5 shadow-lg overflow-x-auto">
+        <div className="w-full lg:w-3/4 bg-white rounded-md p-6 sm:p-12 m-5 shadow-lg overflow-x-auto">
           <table className="w-full text-left table-auto">
             <thead>
-              <tr className="text-gray-600 font-semibold border-b">
-                <th className="p-4">Name</th>
-                <th className="p-4">Email</th>
-                <th className="p-4">Id</th>
-                <th className="p-4">Action</th>
+              <tr className="text-gray-600 font-bold border-b text-lg">
+                <th className="p-5">Name</th>
+                <th className="p-5">Email</th>
+                <th className="p-5">Id</th>
+                <th className="p-5">Action</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user._id} className="border-b hover:bg-gray-100">
-                  <td className="p-4">{user.username}</td>
-                  <td className="p-4">{user.email}</td>
-                  <td className="p-4">{user._id}</td>
-                  <td className="p-4">
-                    <div className="flex gap-2">
-                      {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/update/${user._id}`)}>
-                        <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
-                      </button>
+                  <td className="p-5 text-lg">{user.username}</td>
+                  <td className="p-5 text-lg">{user.email}</td>
+                  <td className="p-5 text-lg">{user._id}</td>
+                  <td className="p-5">
+                    <div className="flex gap-3">
+
 
                       {/* Delete Icon */}
                       <button onClick={() => handleDelete(user._id)}>
-                        <MdDelete className="text-red-500 hover:text-red-700 text-xl cursor-pointer" />
+                        <MdDelete className="text-red-500 hover:text-red-700 text-2xl cursor-pointer" />
                       </button>
                     </div>
                   </td>

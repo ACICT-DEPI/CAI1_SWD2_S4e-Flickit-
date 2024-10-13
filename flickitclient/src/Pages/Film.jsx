@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Slide } from '../Styles/slide';
 import swal from "sweetalert2";
 import { PiFilmSlateFill } from "react-icons/pi";
 
-export function Film () {
+export function Film() {
   const [films, setfilm] = useState([]);
   const navigate = useNavigate();
 
   // Fetch films from the backend
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/Films') // Ensure the endpoint matches your backend route
+      .get('http://localhost:8000/games') 
       .then((response) => setfilm(response.data))
       .catch((error) => console.log('Error fetching films:', error));
   }, []);
@@ -31,7 +31,7 @@ export function Film () {
       cancelButtonText: "No, cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:8000/api/Films/${filmId}`)
+        axios.delete(`http://localhost:8000/game/${filmId}`) // Ensure this matches your backend delete route
           .then((response) => {
             setfilm((prevfilms) => prevfilms.filter((film) => film._id !== filmId));
             swal.fire({
@@ -57,17 +57,15 @@ export function Film () {
   return (
     <div className="flex flex-col lg:flex-row">
       <Slide />
-
       <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
         {/* Header with Film Icon */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
+        <div className="flex items-center gap-4 bg-gradient-to-r from-blue-700 p-5 rounded-xl shadow-lg mb-8">
           <PiFilmSlateFill className="text-4xl text-white" />
           <div>
             <p className="text-white text-lg">Film</p>
             <p className="text-white text-2xl font-bold">{films.length}</p>
           </div>
         </div>
-
         {/* Film Table */}
         <div className="w-full lg:w-2/3 bg-white rounded-md p-5 sm:p-10 m-5 shadow-lg overflow-x-auto">
           <table className="w-full text-left table-auto">
@@ -88,7 +86,7 @@ export function Film () {
                   <td className="p-4">
                     <div className="flex gap-2">
                       {/* Update (Edit) Icon */}
-                      <button onClick={() => navigate(`/update/${film._id}`)}>
+                      <button onClick={() => navigate(`/editfilm/${film._id}`)}>
                         <MdEdit className="text-indigo-500 hover:text-indigo-700 text-xl cursor-pointer" />
                       </button>
 

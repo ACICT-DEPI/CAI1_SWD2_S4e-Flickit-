@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function Button({style,text}) {
+function Button({ style, text, onClick }) {
     return (
-        <div className={style}>{text}</div>
-    )
+        <button className={style} onClick={onClick}>
+            {text}
+        </button>
+    );
 }
 
-export default Button
+export default Button;

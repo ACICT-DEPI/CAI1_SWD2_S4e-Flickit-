@@ -3,21 +3,36 @@ const router = express.Router()
 const gameController=require ('../controllers/game')
 const auth=require ('../middleware/auth.js')
  
-router.post('/game',auth,async(req,res)=>{
-    let payload ={
-        movieEmojis:req.body.movieEmojis,
-        actualMovieName:req.body.actualMovieName,
-         createdById:req.user._id, 
+router.post('/game', async (req, res) => {
+    console.log("Request body:", req.body);  // Log the incoming request body
+
+    try {
+        let createdById = req.body.createdById || 'mockUserId'; // Change this for testing
+
+        let payload = {
+            movieEmojis: req.body.movieEmojis,
+            actualMovieName: req.body.actualMovieName,
+            createdById: createdById,
+        };
+
+        console.log("Payload to create movie:", payload); // Log the payload to check values
+
+        const result = await gameController.createMovie(payload);
+        if (result.value) {
+            return res.send(result.value);
+        }
+        res.status(result.statusCode).send({
+            message: result.message,
+        });
+    } catch (error) {
+        console.error("Error in /game route:", error); // Log the error for debugging
+        res.status(500).send({ message: "Internal Server Error", error: error.message });
     }
-    const result =await gameController.createMovie(payload)
-    if(result.value) {
-        return res.send(result.value)
-    }
-    res.status(result.statusCode).send({
-        message: result.message
-    })
-})
-router.get('/game/:id', auth, async (req, res) => {
+});
+
+
+
+router.get('/game/:id', async (req, res) => {
     try {
         const movieId = req.params.id;
         const movie = await gameController.getMovieById(movieId); 
@@ -31,7 +46,7 @@ router.get('/game/:id', auth, async (req, res) => {
         res.status(500).send({ message: "Error fetching movie", error });
     }
 });
-router.put('/movie/:id', auth, async (req, res) => {
+router.put('/movie/:id', async (req, res) => {
     const gameId = req.params.id;
     const updates = {
         movieEmojis: req.body.movieEmojis,
@@ -49,7 +64,7 @@ router.put('/movie/:id', auth, async (req, res) => {
         res.status(500).send({ message: "Error updating game", error });
     }
 });
-router.delete('/game/:id', auth, async (req, res) => {
+router.delete('/game/:id', async (req, res) => {
     const gameId = req.params.id;
 
     try {
@@ -63,7 +78,7 @@ router.delete('/game/:id', auth, async (req, res) => {
         res.status(500).send({ message: "Error deleting game", error });
     }
 });
-router.get('/games', auth, async (req, res) => {
+router.get('/games', async (req, res) => {
     try {
         const games = await gameController.getAllMoviees(); 
         res.send(games);
@@ -71,7 +86,7 @@ router.get('/games', auth, async (req, res) => {
         res.status(500).send({ message: "Error fetching games", error });
     }
 });
-router.get('/game/name/:movieName', auth, async (req, res) => {
+router.get('/game/name/:movieName',  async (req, res) => {
     try {
         const movieName = req.params.movieName;
         const result = await gameController.getMovieByName(movieName);
@@ -83,5 +98,4 @@ router.get('/game/name/:movieName', auth, async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 });
-module.exports = router 
-
+module.exports = router
