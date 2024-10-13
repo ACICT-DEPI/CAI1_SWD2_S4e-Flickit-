@@ -6,16 +6,44 @@ import monkey2 from "../assets/images/monkey2.png";
 import stars from "../assets/images/star.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-// import axios from "axios"
+
+import axios from "axios"
+
 const ResultsPage=()=>{
     const location = useLocation();
     const navigate = useNavigate();
     const { status } = location.state || 0;
     const { win } = location.state || false;
     const { score } = location.state || 0;
-  
-    const handleSaveRoom = async () => {
-     navigate("/GamesPage");
+    const { Level } = location.state || 0;
+    const { gameChosen } = location.state || 0;
+    const username = localStorage.getItem('username');
+    console.log(username);
+    const handleSaveRoom = async (e) => {
+        e.preventDefault();   
+        console.log("hhhhhhhh");
+        console.log(username,Level,win);
+        try {
+          
+            let response;
+            switch (gameChosen) {
+                case "Guess the Country":
+                     response = await axios.post('http://localhost:8000/Flagroom',  {username,Level: parseInt(Level,10),win, score},);
+                    break;
+                case "Guess the Film":
+                     response = await axios.post('http://localhost:8000/movieroom',  {username,Level: parseInt(Level,10),win, score},);
+                case "Guess the Meal":
+                     response = await axios.post('http://localhost:8000/foodroom',  {username,Level: parseInt(Level,10),win, score},);
+                     console.log("fooood");
+                    break;
+            }
+            console.log("MovieRoom created:", response.data);
+            console.log("hhhhhhhh2222222");
+            navigate("/GamesPage");
+        } catch (error) {
+            setErrorMessage("Error creating movie: " + (error.response?.data.message || error.message));
+        } 
+
       };
     return (
         <div className="flex " >
@@ -54,7 +82,9 @@ const ResultsPage=()=>{
                                     <button
   className={`border-solid rounded-2xl border-2 w-40 h-16 m-5 text-3xl font-bold 
               text-white font-Risque 
-              ${win ? "bg-green-400" : "bg-red-500"}`} onClick={() => handleSaveRoom()}> OK</button>
+
+              ${win ? "bg-green-400" : "bg-red-500"}`} onClick={(e) => handleSaveRoom(e)}> OK</button>
+
 
                 </div>
             </div>

@@ -10,6 +10,7 @@ import { MdOutlineEmojiFlags } from "react-icons/md";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Ensure this import is included
+
 import '../Styles/slide.css'
 
 export const Slide = () => {
@@ -33,6 +34,23 @@ export const Slide = () => {
         });
     };
 
+    // Function to handle logout confirmation
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Are You Sure?',
+            text: 'Log out!',
+            icon: 'warning', // Optional: add an icon
+            showCancelButton: true, // Show cancel button
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel' // Optional: add cancel button text
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('username');
+                window.location.href = '/login';    
+            }
+        });
+    };
+
     const Menus = [
         { title: "Dashboards", path:'/Admin', icon: <MdDashboard /> },
         { title: "Users", path: "/Users", icon: <IoPerson /> },
@@ -47,12 +65,14 @@ export const Slide = () => {
             ],
         },
         { title: "Profile", path: "/profile", spacing: true, icon: <CgProfile /> },
+
         { title: "Logout", path: "#", icon: <IoLogOutOutline />, onClick: handleLogout },
+
     ];
 
     const filteredMenus = Menus.filter(menu =>
-        menu.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        (menu.submenu && menu.submenuItems.some(sub => sub.title.toLowerCase().includes(searchQuery.toLowerCase())))
+        menu.title.toLowerCase().includes(searchQuery.toLowerCase()) || // Main menu filter
+        (menu.submenu && menu.submenuItems.some(sub => sub.title.toLowerCase().includes(searchQuery.toLowerCase()))) // Submenu filter
     );
 
     const handleSubmenuToggle = (index) => {
@@ -62,7 +82,9 @@ export const Slide = () => {
     return (
         <div className=" flex">
             <div
+
                 className={` bg-gradient-to-r from-violet-800 via-blue-700 via-30% to-fuchsia-500 h-screen max-h-full p-5 pt-8 ${
+
                     open ? "w-72" : "w-20"
                 } duration-300 relative`}
             >
@@ -100,6 +122,7 @@ export const Slide = () => {
                         placeholder="Search"
                         value={searchQuery} 
                         onChange={(e) => setSearchQuery(e.target.value)} 
+
                         className={`text-base bg-transparent ml-2 w-full text-purple focus:outline-none ${
                             !open && "hidden"
                         }`}
@@ -135,7 +158,9 @@ export const Slide = () => {
                             {menu.submenu && submenuOpen === index && open && (
                                 <ul>
                                     {menu.submenuItems.filter(sub =>
+
                                         sub.title.toLowerCase().includes(searchQuery.toLowerCase()) 
+
                                     ).map((submenuItem, subIndex) => (
                                         <li
                                             key={subIndex}
