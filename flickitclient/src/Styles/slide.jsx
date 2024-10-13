@@ -11,10 +11,28 @@ import { useState } from "react";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'; // Ensure this import is included
 
+import '../Styles/slide.css'
+
 export const Slide = () => {
     const [open, setOpen] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(null); 
-    const [searchQuery, setSearchQuery] = useState(""); // State to store search input
+    const [searchQuery, setSearchQuery] = useState(""); 
+
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Are You Sure?',
+            text: 'Log out!',
+            icon: 'warning',
+            showCancelButton: true, 
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel' 
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('username');
+                window.location.href = '/login';    
+            }
+        });
+    };
 
     // Function to handle logout confirmation
     const handleLogout = () => {
@@ -47,10 +65,11 @@ export const Slide = () => {
             ],
         },
         { title: "Profile", path: "/profile", spacing: true, icon: <CgProfile /> },
-        { title: "Logout", path: "#", icon: <IoLogOutOutline />, onClick: handleLogout }, // Changed path to "#" and added onClick
+
+        { title: "Logout", path: "#", icon: <IoLogOutOutline />, onClick: handleLogout },
+
     ];
 
-    // Filtered menus based on search input
     const filteredMenus = Menus.filter(menu =>
         menu.title.toLowerCase().includes(searchQuery.toLowerCase()) || // Main menu filter
         (menu.submenu && menu.submenuItems.some(sub => sub.title.toLowerCase().includes(searchQuery.toLowerCase()))) // Submenu filter
@@ -61,9 +80,11 @@ export const Slide = () => {
     };
 
     return (
-        <div className="flex">
+        <div className=" flex">
             <div
-                className={`bg-gradient-to-r from-violet-800 via-sky-600 via-30% to-fuchsia-500 max-h-full p-5 pt-8 ${
+
+                className={` bg-gradient-to-r from-violet-800 via-blue-700 via-30% to-fuchsia-500 h-screen max-h-full p-5 pt-8 ${
+
                     open ? "w-72" : "w-20"
                 } duration-300 relative`}
             >
@@ -99,8 +120,9 @@ export const Slide = () => {
                     <input
                         type={"search"}
                         placeholder="Search"
-                        value={searchQuery} // Bind the input to the state
-                        onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+                        value={searchQuery} 
+                        onChange={(e) => setSearchQuery(e.target.value)} 
+
                         className={`text-base bg-transparent ml-2 w-full text-purple focus:outline-none ${
                             !open && "hidden"
                         }`}
@@ -136,7 +158,9 @@ export const Slide = () => {
                             {menu.submenu && submenuOpen === index && open && (
                                 <ul>
                                     {menu.submenuItems.filter(sub =>
-                                        sub.title.toLowerCase().includes(searchQuery.toLowerCase()) // Filter submenu items based on search
+
+                                        sub.title.toLowerCase().includes(searchQuery.toLowerCase()) 
+
                                     ).map((submenuItem, subIndex) => (
                                         <li
                                             key={subIndex}

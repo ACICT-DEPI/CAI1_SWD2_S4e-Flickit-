@@ -6,7 +6,9 @@ import monkey2 from "../assets/images/monkey2.png";
 import stars from "../assets/images/star.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+
 import axios from "axios"
+
 const ResultsPage=()=>{
     const location = useLocation();
     const navigate = useNavigate();
@@ -41,6 +43,7 @@ const ResultsPage=()=>{
         } catch (error) {
             setErrorMessage("Error creating movie: " + (error.response?.data.message || error.message));
         } 
+
       };
     return (
         <div className="flex " >
@@ -79,7 +82,9 @@ const ResultsPage=()=>{
                                     <button
   className={`border-solid rounded-2xl border-2 w-40 h-16 m-5 text-3xl font-bold 
               text-white font-Risque 
+
               ${win ? "bg-green-400" : "bg-red-500"}`} onClick={(e) => handleSaveRoom(e)}> OK</button>
+
 
                 </div>
             </div>

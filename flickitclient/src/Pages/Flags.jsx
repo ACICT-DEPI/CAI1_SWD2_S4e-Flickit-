@@ -65,7 +65,7 @@ export function Flags () {
 
       <div className="flex flex-col items-center mb-10 mt-10 w-full px-4 sm:px-0">
         {/* Header with Flag Icon */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
+        <div className="flex items-center gap-4 bg-gradient-to-r from-green-700 p-5 rounded-xl shadow-lg mb-8">
           <MdOutlineEmojiFlags className="text-4xl text-white" />
           <div>
             <p className="text-white text-lg">Flags</p>

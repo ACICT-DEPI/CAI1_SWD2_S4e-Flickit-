@@ -8,9 +8,11 @@ const bodyParser = require('body-parser')
 const moviegameRoute=require('./src/routes/moviegame')
 const flaggameRoute=require('./src/routes/flaggame')
 const foodgameRoute=require('./src/routes/foodGame')
+
 const MovieRoomsRoute=require('./src/routes/MovieRoomsRoute')
 const FlagRoomsRoute=require('./src/routes/FlagsRoomsRoute')
 const FoodRoomsRoute=require('./src/routes/FoodRoomsRoute')
+
 const authRoutes = require("./src/routes/authRoutes");
 const user=require('./src/routes/authRoutes')
 const PORT = process.env.PORT;
@@ -29,9 +31,11 @@ app.use(cors({ origin: "http://localhost:5173"}));
 app.use(moviegameRoute)
 app.use(flaggameRoute)
 app.use(foodgameRoute)
+
 app.use(MovieRoomsRoute)
 app.use(FoodRoomsRoute)
 app.use(FlagRoomsRoute)
+
 app.use(user)
 
 

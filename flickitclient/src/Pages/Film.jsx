@@ -59,7 +59,7 @@ export function Film() {
       <Slide />
       <div className="flex flex-col items-center w-full lg:w-4/5 px-4 sm:px-6 lg:px-8 mb-20 mt-10">
         {/* Header with Film Icon */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-500 p-5 rounded-xl shadow-lg mb-8">
+        <div className="flex items-center gap-4 bg-gradient-to-r from-blue-700 p-5 rounded-xl shadow-lg mb-8">
           <PiFilmSlateFill className="text-4xl text-white" />
           <div>
             <p className="text-white text-lg">Film</p>
